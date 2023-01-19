@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="ApplicationRules" name="applicationRules" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <decision id="SendingEmailRules" name="Sending email rules">
+    <decisionTable id="DecisionTable_1olwz9g">
+      <input id="Input_1" label="Issue Status">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>issueStatus</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1vyci9a" label="Not Update days">
+        <inputExpression id="LiteralExpression_0gs9h5k" typeRef="integer">
+          <text>notUpdateDays</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Send email" name="sendEmail" typeRef="string" biodi:width="238" />
+      <rule id="DecisionRule_0jsw5bb">
+        <inputEntry id="UnaryTests_0aho9rt">
+          <text>!=done</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1k8nybw">
+          <text>10</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00ttu9f">
+          <text>vlad.kharchenko2003@gmail.com</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="SendingEmailRules">
+        <dc:Bounds height="80" width="180" x="160" y="120" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
