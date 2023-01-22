@@ -4,15 +4,13 @@
     <bpmn:endEvent id="Event_0j8msu4" name="end">
       <bpmn:incoming>Flow_1217hrm</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0ogfwz3" sourceRef="OutputLog" targetRef="GetAllIssues" />
     <bpmn:serviceTask id="OutputLog" name="outputLog" camunda:asyncBefore="true" camunda:delegateExpression="${OutputLogTask}">
       <bpmn:incoming>Flow_1yhasty</bpmn:incoming>
-      <bpmn:outgoing>Flow_0ogfwz3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0d8rs2q</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0smi5cg" sourceRef="GetAllIssues" targetRef="SendEmailWithIssuesToUser" />
     <bpmn:serviceTask id="GetAllIssues" name="getAllIssues" camunda:asyncBefore="true" camunda:delegateExpression="${GetAllIssuesTask}">
-      <bpmn:incoming>Flow_0ogfwz3</bpmn:incoming>
-      <bpmn:outgoing>Flow_0smi5cg</bpmn:outgoing>
+      <bpmn:incoming>Flow_0d8rs2q</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wyuotr</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_128sdaa" sourceRef="Event_164p5st" targetRef="Gateway_1w3puaw" />
     <bpmn:startEvent id="Event_164p5st" name="TaskStarted" camunda:asyncBefore="true">
@@ -37,19 +35,38 @@
     <bpmn:sequenceFlow id="Flow_0zszmny" sourceRef="EveryFiveMinutes" targetRef="Gateway_1w3puaw" />
     <bpmn:sequenceFlow id="Flow_1217hrm" sourceRef="SendEmailWithIssuesToUser" targetRef="Event_0j8msu4" />
     <bpmn:serviceTask id="SendEmailWithIssuesToUser" name="sendEmailWithIssuesToUser" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailWithIssuesToUserTask}">
-      <bpmn:incoming>Flow_0smi5cg</bpmn:incoming>
+      <bpmn:incoming>Flow_0j38u51</bpmn:incoming>
       <bpmn:outgoing>Flow_1217hrm</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0d8rs2q" sourceRef="OutputLog" targetRef="GetAllIssues" />
+    <bpmn:sequenceFlow id="Flow_0wyuotr" sourceRef="GetAllIssues" targetRef="CheckIssues" />
+    <bpmn:sequenceFlow id="Flow_0j38u51" sourceRef="CheckIssues" targetRef="SendEmailWithIssuesToUser" />
+    <bpmn:businessRuleTask id="CheckIssues" name="check Issues" camunda:asyncBefore="true" camunda:resultVariable="sendEmail" camunda:decisionRef="EmailRules" camunda:mapDecisionResult="singleEntry">
+      <bpmn:incoming>Flow_0wyuotr</bpmn:incoming>
+      <bpmn:outgoing>Flow_0j38u51</bpmn:outgoing>
+    </bpmn:businessRuleTask>
   </bpmn:process>
   <bpmn:message id="Message_1ip71p2" name="Message_1ip71p2" />
   <bpmn:message id="Message_3nqj67g" name="Message_3nqj67g" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="FirstCamundaApp">
+      <bpmndi:BPMNShape id="Event_0j8msu4_di" bpmnElement="Event_0j8msu4">
+        <dc:Bounds x="1292" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1300" y="218" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cpdryu_di" bpmnElement="OutputLog">
+        <dc:Bounds x="510" y="150" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0j8dpnt_di" bpmnElement="Event_164p5st">
         <dc:Bounds x="162" y="82" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="153" y="125" width="59" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1w3puaw_di" bpmnElement="Gateway_1w3puaw" isMarkerVisible="true">
+        <dc:Bounds x="375" y="165" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1vbyabl_di" bpmnElement="EveryFiveMinutes">
         <dc:Bounds x="162" y="282" width="36" height="36" />
@@ -57,32 +74,15 @@
           <dc:Bounds x="141" y="325" width="78" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1w3puaw_di" bpmnElement="Gateway_1w3puaw" isMarkerVisible="true">
-        <dc:Bounds x="375" y="165" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0cpdryu_di" bpmnElement="OutputLog">
-        <dc:Bounds x="510" y="150" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_1yy42ie_di" bpmnElement="SendEmailWithIssuesToUser">
+        <dc:Bounds x="1090" y="150" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1q9x04y_di" bpmnElement="GetAllIssues">
-        <dc:Bounds x="690" y="150" width="100" height="80" />
+        <dc:Bounds x="680" y="150" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0j8msu4_di" bpmnElement="Event_0j8msu4">
-        <dc:Bounds x="1042" y="172" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1050" y="218" width="19" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Activity_07dbz6o_di" bpmnElement="CheckIssues">
+        <dc:Bounds x="890" y="150" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1yy42ie_di" bpmnElement="SendEmailWithIssuesToUser">
-        <dc:Bounds x="850" y="150" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0ogfwz3_di" bpmnElement="Flow_0ogfwz3">
-        <di:waypoint x="610" y="190" />
-        <di:waypoint x="690" y="190" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0smi5cg_di" bpmnElement="Flow_0smi5cg">
-        <di:waypoint x="790" y="190" />
-        <di:waypoint x="850" y="190" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_128sdaa_di" bpmnElement="Flow_128sdaa">
         <di:waypoint x="198" y="100" />
         <di:waypoint x="400" y="100" />
@@ -98,8 +98,20 @@
         <di:waypoint x="400" y="215" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1217hrm_di" bpmnElement="Flow_1217hrm">
-        <di:waypoint x="950" y="190" />
-        <di:waypoint x="1042" y="190" />
+        <di:waypoint x="1190" y="190" />
+        <di:waypoint x="1292" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0d8rs2q_di" bpmnElement="Flow_0d8rs2q">
+        <di:waypoint x="610" y="190" />
+        <di:waypoint x="680" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wyuotr_di" bpmnElement="Flow_0wyuotr">
+        <di:waypoint x="780" y="190" />
+        <di:waypoint x="890" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j38u51_di" bpmnElement="Flow_0j38u51">
+        <di:waypoint x="990" y="190" />
+        <di:waypoint x="1090" y="190" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -2,15 +2,20 @@ package com.example.firstCamundaTask.task;
 
 import com.example.firstCamundaTask.Jira.JiraRequest;
 import com.example.firstCamundaTask.configuration.EmailProperties;
+import com.example.firstCamundaTask.dmn.EmailRules;
+import com.example.firstCamundaTask.model.JiraIssue;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,9 +24,14 @@ import java.util.logging.Logger;
 public class SendEmailWithIssuesToUserTask implements JavaDelegate {
     @Autowired
    public EmailProperties emailProperties;
+
+    public static Integer id;
+    public static DateTime dateTime;
+    public static String statusName;
+
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-//        String email = "vladyslav.kharchenko@sytoss.com";
+
         String email = "vlad.kharchenko2003@gmail.com";
         log.info("Email preparation to {}",email);
         Session session = Session.getInstance(emailProperties.getProperties(), new Authenticator() {
@@ -30,19 +40,22 @@ public class SendEmailWithIssuesToUserTask implements JavaDelegate {
                 return new PasswordAuthentication(emailProperties.getEmail(), emailProperties.getPassword());
             }
         });
+        JiraRequest jiraRequest = new JiraRequest();
+        List<JiraIssue> allIssuies = jiraRequest.getIssuesFields();
+        for (JiraIssue jiraIssue:allIssuies) {
+            id = jiraIssue.getId();
+            dateTime = jiraIssue.getDate();
+            statusName = jiraIssue.getStatusName();
+            Message message = prepareMessage(session,emailProperties.getEmail(), email);
+            try {
+                Transport.send(message);
+                log.info("Message sent successfully");
+            } catch (MessagingException e) {
 
-        Message message = prepareMessage(session,emailProperties.getEmail(), email);
-
-
-        try {
-            Transport.send(message);
-            log.info("Message sent successfully");
-        } catch (MessagingException e) {
-
-            e.printStackTrace();
-            log.info("Message was not send");
+                e.printStackTrace();
+                log.info("Message was not send");
+            }
         }
-
 
     }
 
@@ -53,7 +66,8 @@ public class SendEmailWithIssuesToUserTask implements JavaDelegate {
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             JiraRequest jiraRequest = new JiraRequest();
             message.setSubject("Confirmation");
-            message.setText(jiraRequest.sendRequest());
+            message.setText("Hello, You have overdue issues!" + "\n" + id + "\n" + dateTime + "\n" + statusName );
+
             return message;
 
         } catch (Exception ex) {
