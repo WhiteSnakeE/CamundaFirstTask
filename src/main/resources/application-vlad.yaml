@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: vlad
+jira:
+  user: "vladyslav.kharchenko@sytoss.com"
+  password: "f6NtkmUF3K3dGI5EWFPe1AB6"
+#  url: "https://tasktrack-ng.telekom.at/jira"
