@@ -1,21 +1,19 @@
 package com.example.firstCamundaTask.task;
 
 import com.example.firstCamundaTask.Jira.JiraRequest;
+import com.example.firstCamundaTask.ProcessEnv;
 import com.example.firstCamundaTask.configuration.EmailProperties;
-import com.example.firstCamundaTask.dmn.EmailRules;
 import com.example.firstCamundaTask.model.JiraIssue;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,9 +38,9 @@ public class SendEmailWithIssuesToUserTask implements JavaDelegate {
                 return new PasswordAuthentication(emailProperties.getEmail(), emailProperties.getPassword());
             }
         });
+        ProcessEnv processEnv = new ProcessEnv(execution);
         JiraRequest jiraRequest = new JiraRequest();
-        List<JiraIssue> allIssuies = jiraRequest.getIssuesFields();
-        for (JiraIssue jiraIssue:allIssuies) {
+        JiraIssue jiraIssue = processEnv.getJiraIssues();
             id = jiraIssue.getId();
             dateTime = jiraIssue.getDate();
             statusName = jiraIssue.getStatusName();
@@ -55,7 +53,6 @@ public class SendEmailWithIssuesToUserTask implements JavaDelegate {
                 e.printStackTrace();
                 log.info("Message was not send");
             }
-        }
 
     }
 
@@ -64,9 +61,11 @@ public class SendEmailWithIssuesToUserTask implements JavaDelegate {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(myAccountEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-            JiraRequest jiraRequest = new JiraRequest();
             message.setSubject("Confirmation");
-            message.setText("Hello, You have overdue issues!" + "\n" + id + "\n" + dateTime + "\n" + statusName );
+            message.setText("Hello, You have overdue issues!" + "\n" +
+                    "Id: " + id + "\n" +
+                    "Last Update Time: " + dateTime + "\n" +
+                    "Status Name: " + statusName );
 
             return message;
 
