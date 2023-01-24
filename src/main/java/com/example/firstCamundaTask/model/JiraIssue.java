@@ -14,6 +14,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class JiraIssue implements Serializable {
 	private Integer id;
-	private DateTime date;
+	private DateTime updateDate;
+	private DateTime createDate;
+	private String email;
 	private String statusName;
 }

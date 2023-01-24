@@ -22,7 +22,7 @@ public class JiraRequest {
     @Value(value = "${jira.password}") private String jiraPassword;
 
     private HttpResponse<JsonNode> sendRequest() throws UnirestException {
-        String request = "https://sytoss.atlassian.net/rest/api/3/search?jql=project%20=%20CamundaTraning%20and%20status%20!=%20done%20and%20updated%3E-10d&fields=updated,status";
+        String request = "https://sytoss.atlassian.net/rest/api/3/search?jql=project%20=%20CamundaTraning%20and%20status%20!=%20done%20and%20updated%3E-10d&fields=created,updated,status,creator";
         return Unirest.get(request)
                 .header("Accept", "application/json")
                 .basicAuth("vladyslav.kharchenko@sytoss.com", "")
@@ -31,16 +31,22 @@ public class JiraRequest {
 
     public List<JiraIssue> getIssuesFields() throws UnirestException {
         HttpResponse<JsonNode> response = sendRequest();
-        int countOfIssues = (int)response.getBody().getObject().get("total");
+        int countOfIssues = (int) response.getBody().getObject().get("total");
         List<JiraIssue> issueList  = new ArrayList<>(countOfIssues);
         for (int i = 0; i < countOfIssues; i++) {
-            String id = (String) response.getBody().getObject().getJSONArray("issues").
-                    getJSONObject(i).get("id");
-            String dateTime = (String) response.getBody().getObject().getJSONArray("issues").
-                    getJSONObject(i).getJSONObject("fields").get("updated");
-            String statusName = (String) response.getBody().getObject().getJSONArray("issues").
-                    getJSONObject(i).getJSONObject("fields").getJSONObject("status").get("name");
-            issueList.add(JiraIssue.builder().id(Integer.valueOf(id)).date(DateTime.parse(dateTime)).statusName(statusName).build());
+            String id =  response.getBody().getObject().getJSONArray("issues").
+                    getJSONObject(i).get("id").toString();
+            String createdDate = response.getBody().getObject().getJSONArray("issues").
+                    getJSONObject(i).getJSONObject("fields").get("created").toString();
+            String updatedDate = response.getBody().getObject().getJSONArray("issues").
+                    getJSONObject(i).getJSONObject("fields").get("updated").toString();
+            String email = response.getBody().getObject().getJSONArray("issues").
+                    getJSONObject(i).getJSONObject("fields").getJSONObject("creator").get("emailAddress").toString();
+            String status = response.getBody().getObject().getJSONArray("issues").
+                    getJSONObject(i).getJSONObject("fields").getJSONObject("status").get("name").toString();
+
+            issueList.add(JiraIssue.builder().id(Integer.valueOf(id)).createDate(DateTime.parse(createdDate))
+                    .updateDate(DateTime.parse(updatedDate)).email(email).statusName(status).build());
         }
         return issueList;
     }
@@ -49,6 +55,15 @@ public class JiraRequest {
         HttpResponse<JsonNode> response = sendRequest();
         int countOfIssues = (int)response.getBody().getObject().get("total");
         return countOfIssues > 0;
+    }
+
+    public int lastUpdateDays(JiraIssue issue){
+        if(DateTime.now().getDayOfMonth()==issue.getUpdateDate().getDayOfMonth()) return 0;
+        return (DateTime.now()
+                .minusSeconds(issue.getUpdateDate().getSecondOfMinute())
+                .minusMinutes(issue.getUpdateDate().getMinuteOfHour())
+                .minusHours(issue.getUpdateDate().getHourOfDay())
+                .minusDays(issue.getUpdateDate().getDayOfMonth()).getDayOfMonth());
     }
 
 }

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="SendingEmailRules" name="Sending Email Rules" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
   <decision id="EmailRules" name="Sending Email Rules">
-    <decisionTable id="DecisionTable_1t72i8s">
-      <input id="Input_1" label="Status">
+    <decisionTable id="DecisionTable_1t72i8s" hitPolicy="FIRST">
+      <input id="Input_1" label="Employee Email" biodi:width="240">
         <inputExpression id="InputExpression_1" typeRef="string" expressionLanguage="juel">
-          <text>${jiraIssue.getStatusName()}</text>
+          <text>${issue.getEmail()}</text>
         </inputExpression>
       </input>
-      <input id="InputClause_03gxnd7" label="UpdateDay">
-        <inputExpression id="LiteralExpression_093t74h" typeRef="integer" expressionLanguage="juel">
-          <text>${jiraIssue.getDay}</text>
-        </inputExpression>
-      </input>
-      <output id="Output_1" label="Email" name="sendEmail" typeRef="string" biodi:width="239" />
+      <output id="Output_1" label="Team Lead Email" name="email" typeRef="string" biodi:width="239" />
       <rule id="DecisionRule_1thdkz2">
         <inputEntry id="UnaryTests_0vb5fk1">
-          <text>"In Progress", "To Do"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1dttwkr">
-          <text>&gt;=10</text>
+          <text>"vladyslav.kharchenko@sytoss.com"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0mj8mt0">
           <text>"vlad.kharchenko2003@gmail.com"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18pq7h2">
+        <inputEntry id="UnaryTests_0nxarnt">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1vx819p">
+          <text>"gilent12345@gmail.com"</text>
         </outputEntry>
       </rule>
     </decisionTable>

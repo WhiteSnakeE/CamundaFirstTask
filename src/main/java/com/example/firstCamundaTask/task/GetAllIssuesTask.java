@@ -5,7 +5,7 @@ import com.example.firstCamundaTask.Jira.JiraRequest;
 import com.example.firstCamundaTask.ProcessEnv;
 import com.example.firstCamundaTask.model.JiraIssue;
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.application.ProcessApplication;
+
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,6 @@ import java.util.List;
 
 @Slf4j
 @Component("GetAllIssuesTask")
-@ProcessApplication("applicationRules")
 public class GetAllIssuesTask implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {

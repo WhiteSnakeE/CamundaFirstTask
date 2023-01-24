@@ -1,5 +1,4 @@
 package com.example.firstCamundaTask;
-
 import com.example.firstCamundaTask.model.JiraIssue;
 import org.camunda.bpm.engine.delegate.VariableScope;
 
@@ -10,9 +9,11 @@ public class ProcessEnv {
 	// main process
 
 	public static final String ARE_NEED_ISSUES_PRESENT = "areNeedIssueIsPresent";
-
 	public static final String JIRA_ISSUES = "jiraIssues";
 	public static final String ISSUE = "issue";
+	public static final String IS_DELTA_EQUALS_OR_MORE_THAN_FIVE = "isDeltaEqualsOrMoreThenFive";
+	public static final String IS_DELTA_EQUALS_OR_MORE_THAN_TEN = "isDeltaEqualsOrMoreThenTen";
+	public static final String EMAIL = "email";
 
 	private final VariableScope variableScope;
 
@@ -21,12 +22,22 @@ public class ProcessEnv {
 		this.variableScope = variableScope;
 	}
 
-	// Main Process:
 
+	public void setEmail(String email) {
+		variableScope.setVariable(EMAIL,email);
+	}
+	public String getEmail() {
+		return (String) variableScope.getVariable(EMAIL);
+	}
 	public void setAreNeedIssuesPresent(boolean isSubTaskWithClonePresent) {
 		variableScope.setVariable(ARE_NEED_ISSUES_PRESENT, isSubTaskWithClonePresent);
 	}
-
+	public void setIsDeltaEqualsOrMoreThanFive(boolean isDeltaEqualsOrMoreThanFive){
+		variableScope.setVariable(IS_DELTA_EQUALS_OR_MORE_THAN_FIVE,isDeltaEqualsOrMoreThanFive);
+	}
+	public void setIsDeltaEqualsOrMoreThanTen(boolean isDeltaEqualsOrMoreThanTen){
+		variableScope.setVariable(IS_DELTA_EQUALS_OR_MORE_THAN_TEN,isDeltaEqualsOrMoreThanTen);
+	}
 	public JiraIssue getJiraIssues() {
 		return (JiraIssue) variableScope.getVariable(ISSUE);
 	}
