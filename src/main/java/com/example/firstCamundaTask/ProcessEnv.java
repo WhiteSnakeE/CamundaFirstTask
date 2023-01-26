@@ -23,9 +23,6 @@ public class ProcessEnv {
 	}
 
 
-	public void setEmail(String email) {
-		variableScope.setVariable(EMAIL,email);
-	}
 	public String getEmail() {
 		return (String) variableScope.getVariable(EMAIL);
 	}

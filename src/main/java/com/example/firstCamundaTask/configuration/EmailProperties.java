@@ -14,11 +14,10 @@ import java.util.Properties;
 @Getter
 public class EmailProperties {
     @Value("${spring.mail.username}")
-    private String email;
+    private String email = "surtx0119@gmail.com";
     @Value("${spring.mail.password}")
-    private String password;
+    private String password = "";
 
-    @Bean
     public Properties getProperties(){
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
@@ -29,7 +28,6 @@ public class EmailProperties {
         properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
         return properties;
     }
-
 
 
 }

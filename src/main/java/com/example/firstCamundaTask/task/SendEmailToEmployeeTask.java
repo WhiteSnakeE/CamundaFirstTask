@@ -2,7 +2,7 @@ package com.example.firstCamundaTask.task;
 import com.example.firstCamundaTask.ProcessEnv;
 import com.example.firstCamundaTask.service.EmailMessage;
 import com.example.firstCamundaTask.service.JiraServiceAPI;
-import com.example.firstCamundaTask.service.SendEmail;
+import com.example.firstCamundaTask.service.SendEmailService;
 import com.example.firstCamundaTask.model.JiraIssue;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -23,10 +23,10 @@ public class SendEmailToEmployeeTask implements JavaDelegate {
         log.info("sending only to employee");
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
-        SendEmail sendEmail = new SendEmail();
+        SendEmailService sendEmailService = new SendEmailService();
         EmailMessage emailMessage = new EmailMessage(jiraService);
         String message = emailMessage.setMessageEmployee(jiraIssue) ;
-        sendEmail.send(jiraIssue, jiraIssue.getEmail(), message);
+        sendEmailService.send(jiraIssue.getEmail(), message);
     }
 }
 

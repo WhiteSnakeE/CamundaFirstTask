@@ -107,7 +107,7 @@
         <bpmn:outgoing>Flow_0q748uc</bpmn:outgoing>
       </bpmn:businessRuleTask>
       <bpmn:sequenceFlow id="Flow_0lvqk34" name="yes" sourceRef="Gateway_08rbfw2" targetRef="GetBossEmailTask">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${deltaEqualsOrMoreThenTen&gt;=5}</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${deltaEqualsOrMoreThenTen&gt;=10}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0q748uc" sourceRef="GetBossEmailTask" targetRef="SendEmailToBossTask" />
       <bpmn:endEvent id="Event_1bedetw" name="nothing">
@@ -163,7 +163,7 @@
       <bpmndi:BPMNShape id="Event_1vbyabl_di" bpmnElement="EveryFiveMinutes">
         <dc:Bounds x="212" y="514" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="191" y="563" width="78" height="14" />
+          <dc:Bounds x="211" y="563" width="78" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_00zfqa8_di" bpmnElement="Gateway_00zfqa8" isMarkerVisible="true">

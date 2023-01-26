@@ -23,21 +23,14 @@ public class JiraServiceAPI {
     }
 
     public List<JiraIssue> getIssuesFields()  {
-        HttpResponse<JsonNode> response = jiraRepositoryRequest.getIssueFields();
-        int countOfIssues = (int) response.getBody().getObject().get("total");
+        int countOfIssues = jiraRepositoryRequest.getTotalIssues();
         List<JiraIssue> issueList  = new ArrayList<>(countOfIssues);
         for (int i = 0; i < countOfIssues; i++) {
-            String id =  response.getBody().getObject().getJSONArray("issues").
-                    getJSONObject(i).get("id").toString();
-            String createdDate = response.getBody().getObject().getJSONArray("issues").
-                    getJSONObject(i).getJSONObject("fields").get("created").toString();
-            String updatedDate = response.getBody().getObject().getJSONArray("issues").
-                    getJSONObject(i).getJSONObject("fields").get("updated").toString();
-            String email = response.getBody().getObject().getJSONArray("issues").
-                    getJSONObject(i).getJSONObject("fields").getJSONObject("creator").get("emailAddress").toString();
-            String status = response.getBody().getObject().getJSONArray("issues").
-                    getJSONObject(i).getJSONObject("fields").getJSONObject("status").get("name").toString();
-
+            String id =  jiraRepositoryRequest.getId(i);
+            String createdDate = jiraRepositoryRequest.getCreateDate(i);
+            String updatedDate = jiraRepositoryRequest.getUpdateDate(i);
+            String email = jiraRepositoryRequest.getEmail(i);
+            String status =jiraRepositoryRequest.getStatus(i);
             issueList.add(JiraIssue.builder().id(Long.valueOf(id)).createDate(DateTime.parse(createdDate))
                     .updateDate(DateTime.parse(updatedDate)).email(email).statusName(status).build());
         }

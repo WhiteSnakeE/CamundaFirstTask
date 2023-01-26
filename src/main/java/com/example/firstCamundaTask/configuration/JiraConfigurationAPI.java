@@ -15,9 +15,9 @@ import java.net.URI;
 @Configuration
 @Profile({"dev"})
 public class JiraConfigurationAPI {
-    @Value(value = "${jira.user}") String jiraUser;
-    @Value(value = "${jira.password}") String jiraPassword;
-    @Value(value = "${jira.url}")  String url;
+    @Value(value = "${jira.user}") private String jiraUser;
+    @Value(value = "${jira.password}") private String jiraPassword;
+    @Value(value = "${jira.url}")  private  String url;
 
     @Bean
     public HttpResponse<JsonNode> sendRequest() throws UnirestException {

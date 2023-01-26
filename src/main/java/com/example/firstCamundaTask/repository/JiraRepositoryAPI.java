@@ -20,5 +20,40 @@ public class JiraRepositoryAPI implements JiraRepositoryRequest{
        return httpResponse;
     }
 
+    @Override
+    public String getId(int JSONObject) {
+        return httpResponse.getBody().getObject().getJSONArray("issues").
+                getJSONObject(JSONObject).get("id").toString();
+    }
+
+    @Override
+    public String getCreateDate(int JSONObject) {
+        return  httpResponse.getBody().getObject().getJSONArray("issues").
+                getJSONObject(JSONObject).getJSONObject("fields").get("created").toString();
+    }
+
+    @Override
+    public String getUpdateDate(int JSONObject) {
+        return httpResponse.getBody().getObject().getJSONArray("issues").
+                getJSONObject(JSONObject).getJSONObject("fields").get("updated").toString();
+    }
+
+    @Override
+    public String getEmail(int JSONObject) {
+        return httpResponse.getBody().getObject().getJSONArray("issues").
+                getJSONObject(JSONObject).getJSONObject("fields").getJSONObject("creator").get("emailAddress").toString();
+    }
+
+    @Override
+    public String getStatus(int JSONObject) {
+        return httpResponse.getBody().getObject().getJSONArray("issues").
+                getJSONObject(JSONObject).getJSONObject("fields").getJSONObject("status").get("name").toString();
+    }
+
+    @Override
+    public int getTotalIssues() {
+        return (int) httpResponse.getBody().getObject().get("total");
+    }
+
 
 }

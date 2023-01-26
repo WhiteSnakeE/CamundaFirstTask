@@ -1,9 +1,7 @@
 package com.example.firstCamundaTask.service;
 
 import com.example.firstCamundaTask.configuration.EmailProperties;
-import com.example.firstCamundaTask.model.JiraIssue;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -12,33 +10,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Slf4j
-public class SendEmail {
+public class SendEmailService {
 
-    public static Long id;
-    public static DateTime updateDate;
-    public static DateTime createDate;
-    public static String email;
-    public static String statusName;
     public static String sendMessageText;
 
-
-    public void send(JiraIssue jiraIssue,String receiveEmail, String messageText)  {
+    public void send(String receiveEmail, String messageText)  {
         EmailProperties emailProperties = new EmailProperties();
-        id = jiraIssue.getId();
-        updateDate = jiraIssue.getUpdateDate();
-        createDate = jiraIssue.getCreateDate();
-        email = receiveEmail;
-        statusName = jiraIssue.getStatusName();
         sendMessageText = messageText;
-        log.info("Email preparation to {}", email);
+        log.info("Email preparation to {}", receiveEmail);
         Session session = Session.getInstance(emailProperties.getProperties(), new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("surtx0119@gmail.com", "kqjiymrkjdprqbib");
+                return new PasswordAuthentication(emailProperties.getEmail(), emailProperties.getPassword());
             }
         });
 
-        Message message = prepareMessage(session, "surtx0119@gmail.com", email);
+        Message message = prepareMessage(session, emailProperties.getEmail(), receiveEmail);
 
         try {
             Transport.send(message);
@@ -62,7 +49,7 @@ public class SendEmail {
             return message;
 
         } catch (Exception ex) {
-            Logger.getLogger(SendEmail.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SendEmailService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
