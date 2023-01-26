@@ -10,12 +10,12 @@ import java.time.format.DateTimeFormatter;
 
 
 @Slf4j
-@Component("OutputLogTask")
+@Component("GetLogTask")
 public class OutputLogTask implements JavaDelegate {
 
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(DelegateExecution execution)  {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         log.info("Start time of this event is {}",dtf.format(now));

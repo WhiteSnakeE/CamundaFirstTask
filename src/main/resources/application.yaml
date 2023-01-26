@@ -1,8 +1,8 @@
-spring.datasource:
-  url: jdbc:h2:./camunda-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-  username: sa
-  password: sa
-spring.h2.console.enabled: true
+#spring.datasource:
+#  url: jdbc:h2:./camunda-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#  username: sa
+#  password: sa
+#spring.h2.console.enabled: true
 camunda.bpm:
   admin-user:
     id: demo
@@ -15,3 +15,15 @@ camunda.bpm:
     max-wait: 10000
 server.port: 8080
 
+spring:
+  profiles:
+    active: dev
+  mail:
+    password: ""
+    username: "surtx0119@gmail.com"
+jira :
+  user: "vladyslav.kharchenko@sytoss.com"
+  password: ""
+  url: "https://sytoss.atlassian.net/rest/api/3/search?jql=project%20=%20CamundaTraning%20and%20status%20!=%20done&fields=created,updated,status,creator"
+  #"https://sytoss.atlassian.net/issues/?jql="
+#"https://sytoss.atlassian.net/rest/api/3/search?jql=project%20=%20CamundaTraning%20and%20status%20!=%20done%20and%20updated>-10d&fields=created,updated,status,creator"
