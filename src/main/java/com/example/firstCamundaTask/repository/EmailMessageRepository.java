@@ -7,6 +7,8 @@ import java.util.Properties;
 
 @Repository
 public interface EmailMessageRepository {
+
+
     String setMessageEmployee(JiraIssue jiraIssue);
 
     String setMessageBoss(JiraIssue jiraIssue);

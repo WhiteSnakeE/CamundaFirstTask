@@ -18,13 +18,12 @@ public class CalcDeltaTask implements JavaDelegate {
     }
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(DelegateExecution execution)  {
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
         int days = jiraRequest.lastUpdateDays(jiraIssue);
-        processEnv.setIsDeltaEqualsOrMoreThanFive(days);
-        processEnv.setIsDeltaEqualsOrMoreThanTen(days);
-        log.info("Delta is {}",days);
+        jiraIssue.setDelta(days);
+        log.info("Delta is {}, {}",days,execution.getProcessInstance());
 
     }
 }

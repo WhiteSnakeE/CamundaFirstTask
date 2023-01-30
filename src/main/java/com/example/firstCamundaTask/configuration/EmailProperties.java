@@ -16,7 +16,7 @@ public class EmailProperties {
     @Value("${spring.mail.username}")
     private String email = "surtx0119@gmail.com";
     @Value("${spring.mail.password}")
-    private String password = "";
+    private String password = "kqjiymrkjdprqbib";
 
     public Properties getProperties(){
         Properties properties = new Properties();

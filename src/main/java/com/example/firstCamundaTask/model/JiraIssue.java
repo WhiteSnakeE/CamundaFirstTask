@@ -18,4 +18,5 @@ public class JiraIssue implements Serializable {
 	private DateTime createDate;
 	private String email;
 	private String statusName;
+	private int delta;
 }

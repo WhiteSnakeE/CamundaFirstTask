@@ -38,7 +38,7 @@ public class SendEmailService {
 
     }
 
-    private static Message prepareMessage(Session session, String myAccountEmail, String recipient) {
+    private Message prepareMessage(Session session, String myAccountEmail, String recipient) {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(myAccountEmail));
