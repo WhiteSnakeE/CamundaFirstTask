@@ -19,11 +19,11 @@ spring:
   profiles:
     active: dev
 mail:
-  password: "nrwwcbloplrhevsl"
+  password: ""
   username: "surtx0119@gmail.com"
 jira :
   user: "vladyslav.kharchenko@sytoss.com"
-  password: "ATATT3xFfGF0E2pxgn6lfk4ETSOOggd2pkzSpj4e2ysqF7Lgky20ZxtMXffg8lmOFhWS3jPxLfykuSgZZVrbvH_4iSE7Br67m03567mam7vynoo0sn3wUHMivFpDvAa8is6mI4ub6IDTl7SU97ENbn_mSXiGYbgrMpkySmu_HkQqYXxzO1vwldc=E4A2C836"
+  password: ""
   url: "https://sytoss.atlassian.net/rest/api/3/search?jql=project%20=%20CamundaTraning%20and%20status%20!=%20done&fields=created,updated,status,creator"
   #"https://sytoss.atlassian.net/issues/?jql="
 #"https://sytoss.atlassian.net/rest/api/3/search?jql=project%20=%20CamundaTraning%20and%20status%20!=%20done%20and%20updated>-10d&fields=created,updated,status,creator"
