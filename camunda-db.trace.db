@@ -91,7 +91,7 @@ General error: "java.lang.IllegalStateException: The file is locked: nio:F:/User
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:338)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1332)
-	at com.example.firstCamundaTask.FirstCamundaTaskApplication.main(FirstCamundaTaskApplication.java:21)
+	at com.example.issueRemindEmailSender.FirstCamundaTaskApplication.main(FirstCamundaTaskApplication.java:21)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Внутренняя ошибка: "java.lang.IllegalStateException: The file is locked: nio:F:/Users/Vlad/CamundaProjects/CamundaFirstTask/camunda-db.mv.db [1.4.200/7]"
 General error: "java.lang.IllegalStateException: The file is locked: nio:F:/Users/Vlad/CamundaProjects/CamundaFirstTask/camunda-db.mv.db [1.4.200/7]" [50000-200]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:505)
@@ -176,7 +176,7 @@ General error: "java.lang.IllegalStateException: The file is locked: nio:F:/User
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:338)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1332)
-	at com.example.firstCamundaTask.FirstCamundaTaskApplication.main(FirstCamundaTaskApplication.java:21)
+	at com.example.issueRemindEmailSender.FirstCamundaTaskApplication.main(FirstCamundaTaskApplication.java:21)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Внутренняя ошибка: "java.lang.IllegalStateException: The file is locked: nio:F:/Users/Vlad/CamundaProjects/CamundaFirstTask/camunda-db.mv.db [1.4.200/7]"
 General error: "java.lang.IllegalStateException: The file is locked: nio:F:/Users/Vlad/CamundaProjects/CamundaFirstTask/camunda-db.mv.db [1.4.200/7]" [50000-200]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:505)
@@ -265,7 +265,7 @@ General error: "java.lang.IllegalStateException: The file is locked: nio:F:/User
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:338)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1332)
-	at com.example.firstCamundaTask.FirstCamundaTaskApplication.main(FirstCamundaTaskApplication.java:21)
+	at com.example.issueRemindEmailSender.FirstCamundaTaskApplication.main(FirstCamundaTaskApplication.java:21)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Внутренняя ошибка: "java.lang.IllegalStateException: The file is locked: nio:F:/Users/Vlad/CamundaProjects/CamundaFirstTask/camunda-db.mv.db [1.4.200/7]"
 General error: "java.lang.IllegalStateException: The file is locked: nio:F:/Users/Vlad/CamundaProjects/CamundaFirstTask/camunda-db.mv.db [1.4.200/7]" [50000-200]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:505)

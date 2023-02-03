@@ -1,4 +1,4 @@
-//package com.example.firstCamundaTask.configuration;
+//package com.example.issueRemindEmailSender.configuration;
 //
 //import lombok.extern.slf4j.Slf4j;
 //import org.camunda.bpm.BpmPlatform;
@@ -28,7 +28,7 @@
 //		return processEngineService().getDefaultProcessEngine();
 //	}
 //
-//	@Bean(name = "CamundaFirstTask")
+//	@Bean(name = "IssueRemindEmailSender")
 //	public SpringServletProcessApplication processApplication() {
 //		return new SpringServletProcessApplication();
 //	}

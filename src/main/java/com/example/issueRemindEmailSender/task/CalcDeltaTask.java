@@ -1,7 +1,7 @@
-package com.example.firstCamundaTask.task;
-import com.example.firstCamundaTask.ProcessEnv;
-import com.example.firstCamundaTask.model.JiraIssue;
-import com.example.firstCamundaTask.service.JiraServiceAPI;
+package com.example.issueRemindEmailSender.task;
+import com.example.issueRemindEmailSender.ProcessEnv;
+import com.example.issueRemindEmailSender.model.JiraIssue;
+import com.example.issueRemindEmailSender.service.JiraServiceAPI;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;

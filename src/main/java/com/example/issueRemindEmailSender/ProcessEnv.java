@@ -1,5 +1,5 @@
-package com.example.firstCamundaTask;
-import com.example.firstCamundaTask.model.JiraIssue;
+package com.example.issueRemindEmailSender;
+import com.example.issueRemindEmailSender.model.JiraIssue;
 import org.camunda.bpm.engine.delegate.VariableScope;
 
 import java.util.List;

@@ -1,9 +1,7 @@
-package com.example.firstCamundaTask.repository;
+package com.example.issueRemindEmailSender.repository;
 
-import com.example.firstCamundaTask.model.JiraIssue;
+import com.example.issueRemindEmailSender.model.JiraIssue;
 import org.springframework.stereotype.Repository;
-
-import java.util.Properties;
 
 @Repository
 public interface EmailMessageRepository {

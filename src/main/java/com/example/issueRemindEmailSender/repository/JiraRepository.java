@@ -1,4 +1,4 @@
-package com.example.firstCamundaTask.repository;
+package com.example.issueRemindEmailSender.repository;
 
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 

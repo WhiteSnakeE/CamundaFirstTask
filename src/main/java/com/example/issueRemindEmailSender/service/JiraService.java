@@ -1,9 +1,9 @@
-package com.example.firstCamundaTask.service;
+package com.example.issueRemindEmailSender.service;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
-import com.example.firstCamundaTask.model.JiraIssue;
-import com.example.firstCamundaTask.repository.JiraRepository;
+import com.example.issueRemindEmailSender.model.JiraIssue;
+import com.example.issueRemindEmailSender.repository.JiraRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class JiraService {
     private final JiraRepository jiraRepository;
 
     private int maxResults = 500;
-    private static final String JQL = "issueFunction in issueFieldMatch(\"project = CamundaTraning\") and status!=done)";
+    private static final String JQL = "project = \"CamundaTraning\" and status!=done";
 
 
     public JiraService( JiraRepository jiraRepository) {

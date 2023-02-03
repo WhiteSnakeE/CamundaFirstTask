@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="CamundaFirstTask:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/CamundaFirstTask_war</output-path>
+    <root id="archive" name="CamundaFirstTask_war.war">
+      <element id="artifact" artifact-name="CamundaFirstTask:war exploded" />
+    </root>
+  </artifact>
+</component>

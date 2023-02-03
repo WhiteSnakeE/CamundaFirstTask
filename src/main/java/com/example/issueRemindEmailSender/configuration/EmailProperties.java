@@ -1,11 +1,9 @@
-package com.example.firstCamundaTask.configuration;
+package com.example.issueRemindEmailSender.configuration;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 
 import java.util.Properties;
 
@@ -13,10 +11,10 @@ import java.util.Properties;
 @Profile({"dev"})
 @Getter
 public class EmailProperties {
-    @Value("${spring.mail.username}")
+    @Value("${mail.username}")
     private String email = "surtx0119@gmail.com";
-    @Value("${spring.mail.password}")
-    private String password = "kqjiymrkjdprqbib";
+    @Value("${mail.password}")
+    private String password = "nrwwcbloplrhevsl";
 
     public Properties getProperties(){
         Properties properties = new Properties();

@@ -1,4 +1,4 @@
-package com.example.firstCamundaTask.repository;
+package com.example.issueRemindEmailSender.repository;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;

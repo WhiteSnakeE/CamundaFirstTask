@@ -1,4 +1,4 @@
-package com.example.firstCamundaTask.model;
+package com.example.issueRemindEmailSender.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

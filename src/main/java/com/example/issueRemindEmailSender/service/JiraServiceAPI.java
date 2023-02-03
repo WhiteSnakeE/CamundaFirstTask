@@ -1,9 +1,7 @@
-package com.example.firstCamundaTask.service;
+package com.example.issueRemindEmailSender.service;
 
-import com.example.firstCamundaTask.model.JiraIssue;
-import com.example.firstCamundaTask.repository.JiraRepositoryRequest;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
+import com.example.issueRemindEmailSender.model.JiraIssue;
+import com.example.issueRemindEmailSender.repository.JiraRepositoryRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,7 @@
-package com.example.firstCamundaTask.repository;
+package com.example.issueRemindEmailSender.repository;
 
-import com.atlassian.jira.rest.client.api.JiraRestClient;
-import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.request.GetRequest;
 import org.springframework.stereotype.Repository;
 
 @Repository

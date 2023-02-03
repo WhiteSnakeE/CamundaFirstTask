@@ -1,6 +1,6 @@
-package com.example.firstCamundaTask.service;
+package com.example.issueRemindEmailSender.service;
 
-import com.example.firstCamundaTask.configuration.EmailProperties;
+import com.example.issueRemindEmailSender.configuration.EmailProperties;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.mail.*;

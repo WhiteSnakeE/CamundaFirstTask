@@ -1,7 +1,7 @@
-package com.example.firstCamundaTask.service;
+package com.example.issueRemindEmailSender.service;
 
-import com.example.firstCamundaTask.model.JiraIssue;
-import com.example.firstCamundaTask.repository.EmailMessageRepository;
+import com.example.issueRemindEmailSender.model.JiraIssue;
+import com.example.issueRemindEmailSender.repository.EmailMessageRepository;
 import org.springframework.stereotype.Service;
 
 @Service

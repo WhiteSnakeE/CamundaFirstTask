@@ -1,15 +1,18 @@
-package com.example.firstCamundaTask;
+package com.example.issueRemindEmailSender;
 
+
+
+
+import org.camunda.bpm.application.impl.ServletProcessApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Profile;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(scanBasePackages = {"com.example"})
 @Profile("!springtest")
-public class FirstCamundaTaskApplication extends SpringBootServletInitializer {
+public class FirstCamundaTaskApplication  {
 
 //    @Override
 //    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

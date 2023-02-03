@@ -1,8 +1,7 @@
-package com.example.firstCamundaTask.task;
+package com.example.issueRemindEmailSender.task;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.camunda.bpm.model.dmn.Dmn;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

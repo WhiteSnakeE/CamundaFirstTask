@@ -1,4 +1,4 @@
-package com.example.firstCamundaTask.configuration.handler;
+package com.example.issueRemindEmailSender.configuration.handler;
 
 import com.atlassian.httpclient.api.Request;
 import com.atlassian.jira.rest.client.api.AuthenticationHandler;
