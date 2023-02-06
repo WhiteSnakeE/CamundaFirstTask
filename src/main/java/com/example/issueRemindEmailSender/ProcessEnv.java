@@ -27,7 +27,9 @@ public class ProcessEnv {
 	public void setAreNeedIssuesPresent(boolean isSubTaskWithClonePresent) {
 		variableScope.setVariable(ARE_NEED_ISSUES_PRESENT, isSubTaskWithClonePresent);
 	}
-
+	public void setJiraIssues(JiraIssue jiraIssues) {
+		variableScope.setVariable(ISSUE, jiraIssues);
+	}
 	public JiraIssue getJiraIssues() {
 		return (JiraIssue) variableScope.getVariable(ISSUE);
 	}

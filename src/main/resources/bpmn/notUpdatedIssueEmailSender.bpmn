@@ -11,7 +11,7 @@
     <bpmn:endEvent id="Event_0j8msu4" name="end" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_1wjrft8</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="GetAllIssues" name="get All Issues" camunda:asyncBefore="true" camunda:delegateExpression="${GetAllIssuesTask}">
+    <bpmn:serviceTask id="GetAllIssues" name="get All Issues" camunda:asyncBefore="true" camunda:delegateExpression="${GetAllIssues}">
       <bpmn:incoming>Flow_1dfbqmk</bpmn:incoming>
       <bpmn:outgoing>Flow_0wyuotr</bpmn:outgoing>
       <bpmn:property id="Property_1xhcn28" name="__targetRef_placeholder" />
@@ -66,7 +66,7 @@
       <bpmn:startEvent id="Event_0joziz9" name="All Issues collected">
         <bpmn:outgoing>Flow_0llnmh5</bpmn:outgoing>
       </bpmn:startEvent>
-      <bpmn:serviceTask id="SendEmailToTeamLeadTask" name="send email to team lead" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailToTeamLeadTask}">
+      <bpmn:serviceTask id="SendEmailToTeamLeadTask" name="send email to team lead" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailToTeamLead}">
         <bpmn:incoming>Flow_0q748uc</bpmn:incoming>
         <bpmn:outgoing>Flow_1l3sg70</bpmn:outgoing>
       </bpmn:serviceTask>
@@ -76,7 +76,7 @@
       </bpmn:endEvent>
       <bpmn:sequenceFlow id="Flow_1l3sg70" sourceRef="SendEmailToTeamLeadTask" targetRef="Event_164grpo" />
       <bpmn:sequenceFlow id="Flow_04x3u39" sourceRef="CalculateNotUpdateDays" targetRef="Gateway_0nnxpky" />
-      <bpmn:serviceTask id="CalculateNotUpdateDays" name="calculate not update days" camunda:asyncBefore="true" camunda:delegateExpression="${CalcDeltaTask}">
+      <bpmn:serviceTask id="CalculateNotUpdateDays" name="calculate not update days" camunda:asyncBefore="true" camunda:delegateExpression="${CalcDelta}">
         <bpmn:incoming>Flow_0llnmh5</bpmn:incoming>
         <bpmn:outgoing>Flow_04x3u39</bpmn:outgoing>
       </bpmn:serviceTask>
@@ -88,7 +88,7 @@
       <bpmn:sequenceFlow id="Flow_17ya30w" name="Yes" sourceRef="Gateway_0nnxpky" targetRef="SendEmailToEmployeeTask">
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${issue.getDelta()&gt;=5}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
-      <bpmn:serviceTask id="SendEmailToEmployeeTask" name="send email  to employee" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailToEmployeeTask}">
+      <bpmn:serviceTask id="SendEmailToEmployeeTask" name="send email  to employee" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailToEmployee}">
         <bpmn:incoming>Flow_17ya30w</bpmn:incoming>
         <bpmn:outgoing>Flow_1i0dzy8</bpmn:outgoing>
       </bpmn:serviceTask>
@@ -120,7 +120,7 @@
       <bpmn:association id="Association_1u2y6zl" sourceRef="CalculateNotUpdateDays" targetRef="TextAnnotation_1bcxitw" />
     </bpmn:subProcess>
     <bpmn:sequenceFlow id="Flow_1dfbqmk" sourceRef="getStartTimeOfProcessViaLog" targetRef="GetAllIssues" />
-    <bpmn:serviceTask id="getStartTimeOfProcessViaLog" name="get start time of process via log" camunda:asyncBefore="true" camunda:delegateExpression="${GetLogTask}">
+    <bpmn:serviceTask id="getStartTimeOfProcessViaLog" name="get start time of process via log" camunda:asyncBefore="true" camunda:delegateExpression="${GetLog}">
       <bpmn:incoming>Flow_1yhasty</bpmn:incoming>
       <bpmn:outgoing>Flow_1dfbqmk</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -184,10 +184,6 @@
       <bpmndi:BPMNShape id="Activity_0km20uu_di" bpmnElement="Activity_0km20uu" isExpanded="true">
         <dc:Bounds x="1150" y="240" width="1120" height="500" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1bcxitw_di" bpmnElement="TextAnnotation_1bcxitw">
-        <dc:Bounds x="1320" y="260" width="100" height="70" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0joziz9_di" bpmnElement="Event_0joziz9">
         <dc:Bounds x="1192" y="402" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -240,10 +236,10 @@
           <dc:Bounds x="2183" y="695" width="37" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_1u2y6zl_di" bpmnElement="Association_1u2y6zl">
-        <di:waypoint x="1385" y="380" />
-        <di:waypoint x="1377" y="330" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1bcxitw_di" bpmnElement="TextAnnotation_1bcxitw">
+        <dc:Bounds x="1320" y="260" width="100" height="70" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0llnmh5_di" bpmnElement="Flow_0llnmh5">
         <di:waypoint x="1228" y="420" />
         <di:waypoint x="1340" y="420" />
@@ -293,6 +289,10 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1518" y="464" width="15" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1u2y6zl_di" bpmnElement="Association_1u2y6zl">
+        <di:waypoint x="1385" y="380" />
+        <di:waypoint x="1377" y="330" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_1me3col_di" bpmnElement="getStartTimeOfProcessViaLog">
         <dc:Bounds x="540" y="410" width="100" height="80" />

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Slf4j
-@Component("GetAllIssuesTask")
+@Component("GetAllIssues")
 public class GetAllIssuesTask implements JavaDelegate {
 
     private final JiraServiceAPI jiraService;

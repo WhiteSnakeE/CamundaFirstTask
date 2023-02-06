@@ -39,7 +39,7 @@ public class JiraServiceAPI {
         return !allIssuies.isEmpty();
     }
 
-    public int lastUpdateDays(JiraIssue issue){
+    public static int lastUpdateDays(JiraIssue issue){
         if(DateTime.now().getDayOfMonth()==issue.getUpdateDate().getDayOfMonth()) return 0;
         return (DateTime.now()
                 .minusSeconds(issue.getUpdateDate().getSecondOfMinute())

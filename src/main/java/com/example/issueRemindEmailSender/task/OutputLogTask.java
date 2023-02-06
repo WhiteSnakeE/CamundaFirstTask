@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 
 @Slf4j
-@Component("GetLogTask")
+@Component("GetLog")
 public class OutputLogTask implements JavaDelegate {
 
 

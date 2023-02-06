@@ -8,21 +8,19 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component("CalcDeltaTask")
+@Component("CalcDelta")
 public class CalcDeltaTask implements JavaDelegate {
 
-    private final JiraServiceAPI jiraRequest;
-
-    public CalcDeltaTask(JiraServiceAPI jiraRequest) {
-        this.jiraRequest = jiraRequest;
+    public CalcDeltaTask() {
     }
 
     @Override
     public void execute(DelegateExecution execution)  {
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
-        int days = jiraRequest.lastUpdateDays(jiraIssue);
+        int days = JiraServiceAPI.lastUpdateDays(jiraIssue);
         jiraIssue.setDelta(days);
+        processEnv.setJiraIssues(jiraIssue);
         log.info("Delta is {}, {}",days,execution.getProcessInstance());
 
     }

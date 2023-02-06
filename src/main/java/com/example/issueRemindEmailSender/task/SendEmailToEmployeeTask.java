@@ -10,13 +10,13 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component("SendEmailToEmployeeTask")
+@Component("SendEmailToEmployee")
 public class SendEmailToEmployeeTask implements JavaDelegate {
-    private final JiraServiceAPI jiraService;
-
-    public SendEmailToEmployeeTask(JiraServiceAPI jiraService){
-        this.jiraService = jiraService;
-    }
+    //    private final JiraServiceAPI jiraService;
+//
+//    public SendEmailToEmployeeTask(JiraServiceAPI jiraService){
+//        this.jiraService = jiraService;
+//    }
 
     @Override
     public void execute(DelegateExecution execution)  {
@@ -24,7 +24,7 @@ public class SendEmailToEmployeeTask implements JavaDelegate {
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
         SendEmailService sendEmailService = new SendEmailService();
-        EmailMessage emailMessage = new EmailMessage(jiraService);
+        EmailMessage emailMessage = new EmailMessage();
         String message = emailMessage.setMessageEmployee(jiraIssue) ;
         sendEmailService.send(jiraIssue.getEmail(), message);
     }
