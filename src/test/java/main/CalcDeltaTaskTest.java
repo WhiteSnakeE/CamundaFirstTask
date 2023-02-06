@@ -56,7 +56,7 @@ public class CalcDeltaTaskTest {
 		task.execute(execution);
 
 		//verify
-		verify(execution).setVariable(ProcessEnv.ISSUE, jiraIssueExpected);
+		verify(execution).setVariable(ProcessEnv.ISSUE, jiraIssue);
 
 	}
 

@@ -42,7 +42,7 @@ public class GetAllIssuesTaskTest {
         jiraIssueList.add(jiraIssue2);
         jiraIssueList.add(jiraIssue);
         when(jiraServiceAPI.getIssuesFields()).thenReturn(jiraIssueList);
-        when(jiraServiceAPI.areNeedIssuePresents(jiraIssueList)).thenReturn(true);
+        when(jiraServiceAPI.areNeedIssuePresents(jiraIssueList)).thenReturn(jiraIssueList.isEmpty());
 //        when(correlationBuilder.setVariable(ProcessEnv.ARE_NEED_ISSUES_PRESENT, true)).thenReturn(correlationBuilder);
 //        when(execution.getVariable(ProcessEnv.ISSUE)).thenReturn(jiraIssue);
 //        when(correlationBuilder.setVariable(ProcessEnv.JIRA_ISSUES, jiraIssueList)).thenReturn(correlationBuilder);
@@ -52,8 +52,9 @@ public class GetAllIssuesTaskTest {
         task.execute(execution);
 
         //verify
-//        verify(execution).getVariable(ProcessEnv.JIRA_ISSUES);
+       // verify(execution).getVariable(ProcessEnv.JIRA_ISSUES);
         verify(execution).setVariable(ProcessEnv.JIRA_ISSUES,jiraIssueList);
+        verify(execution).setVariable(ProcessEnv.ARE_NEED_ISSUES_PRESENT,jiraIssueList.isEmpty());
     }
 
     @Test

@@ -24,8 +24,8 @@ public class ProcessEnv {
 	public String getEmail() {
 		return (String) variableScope.getVariable(EMAIL);
 	}
-	public void setAreNeedIssuesPresent(boolean isSubTaskWithClonePresent) {
-		variableScope.setVariable(ARE_NEED_ISSUES_PRESENT, isSubTaskWithClonePresent);
+	public void setAreNeedIssuesPresent(boolean areNeedIssueIsPresent) {
+		variableScope.setVariable(ARE_NEED_ISSUES_PRESENT, areNeedIssueIsPresent);
 	}
 	public void setJiraIssues(JiraIssue jiraIssues) {
 		variableScope.setVariable(ISSUE, jiraIssues);
