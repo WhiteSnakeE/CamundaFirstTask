@@ -1,7 +1,7 @@
 package com.example.issueRemindEmailSender.task;
 import com.example.issueRemindEmailSender.ProcessEnv;
 import com.example.issueRemindEmailSender.service.EmailMessage;
-import com.example.issueRemindEmailSender.service.JiraServiceAPI;
+
 import com.example.issueRemindEmailSender.service.SendEmailService;
 import com.example.issueRemindEmailSender.model.JiraIssue;
 import lombok.extern.slf4j.Slf4j;
@@ -12,11 +12,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component("SendEmailToEmployee")
 public class SendEmailToEmployeeTask implements JavaDelegate {
-    //    private final JiraServiceAPI jiraService;
-//
-//    public SendEmailToEmployeeTask(JiraServiceAPI jiraService){
-//        this.jiraService = jiraService;
-//    }
 
     @Override
     public void execute(DelegateExecution execution)  {

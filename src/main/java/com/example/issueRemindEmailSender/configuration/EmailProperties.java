@@ -14,7 +14,7 @@ public class EmailProperties {
     @Value("${mail.username}")
     private String email = "surtx0119@gmail.com";
     @Value("${mail.password}")
-    private String password = "";
+    private String password = "cukwbvdjbzceujyo";
 
     public Properties getProperties(){
         Properties properties = new Properties();

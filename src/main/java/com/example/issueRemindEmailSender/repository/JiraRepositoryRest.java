@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @Profile({"dev"})
 public class JiraRepositoryRest implements JiraRepository {
 
+
     private final SearchRestClient searchRestClient;
 
     public JiraRepositoryRest(JiraRestClient jiraRestClient) {

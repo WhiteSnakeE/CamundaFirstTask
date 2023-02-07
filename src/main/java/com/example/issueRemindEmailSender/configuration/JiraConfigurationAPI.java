@@ -8,20 +8,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+//
+//@Configuration
+//@Profile({"dev"})
+//public class JiraConfigurationAPI {
 
-@Configuration
-@Profile({"dev"})
-public class JiraConfigurationAPI {
-    @Value(value = "${jira.user}") private String jiraUser;
-    @Value(value = "${jira.password}") private String jiraPassword;
-    @Value(value = "${jira.url}")  private  String url;
 
-    @Bean
-    public HttpResponse<JsonNode> sendRequest() throws UnirestException {
-        String request = url;
-        return Unirest.get(request)
-                .header("Accept", "application/json")
-                .basicAuth(jiraUser, jiraPassword)
-                .asJson();
-    }
-}
+//    @Bean
+//    public HttpResponse<JsonNode> sendRequest( String url ,String jiraUser, String jiraPassword) throws UnirestException {
+//        String request = url;
+//        return Unirest.get(request)
+//                .header("Accept", "application/json")
+//                .basicAuth(jiraUser, jiraPassword)
+//                .asJson();
+//    }
+//}

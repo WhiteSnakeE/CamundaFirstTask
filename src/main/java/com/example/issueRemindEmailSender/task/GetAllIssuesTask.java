@@ -4,7 +4,7 @@ package com.example.issueRemindEmailSender.task;
 
 import com.example.issueRemindEmailSender.ProcessEnv;
 import com.example.issueRemindEmailSender.model.JiraIssue;
-import com.example.issueRemindEmailSender.service.JiraServiceAPI;
+import com.example.issueRemindEmailSender.service.JiraService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -17,9 +17,9 @@ import java.util.List;
 @Component("GetAllIssues")
 public class GetAllIssuesTask implements JavaDelegate {
 
-    private final JiraServiceAPI jiraService;
+    private final JiraService jiraService;
 
-    public GetAllIssuesTask(JiraServiceAPI jiraService){
+    public GetAllIssuesTask(JiraService jiraService){
         this.jiraService = jiraService;
     }
 

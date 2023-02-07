@@ -24,6 +24,6 @@ mail:
 jira :
   user: "vladyslav.kharchenko@sytoss.com"
   password: ""
-  url: "https://sytoss.atlassian.net/rest/api/3/search?jql=project%20=%20CamundaTraning%20and%20status%20!=%20done&fields=created,updated,status,creator"
+  url: "https://sytoss.atlassian.net/issues/?jql="
   #"https://sytoss.atlassian.net/issues/?jql="
 #"https://sytoss.atlassian.net/rest/api/3/search?jql=project%20=%20CamundaTraning%20and%20status%20!=%20done%20and%20updated>-10d&fields=created,updated,status,creator"
