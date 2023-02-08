@@ -19,8 +19,8 @@ spring:
   profiles:
     active: dev
 mail:
-  password: "cukwbvdjbzceujyo"
-  username: ""
+  password: ""
+  username: "surtx0119@gmail.com"
 jira :
   user: "vladyslav.kharchenko@sytoss.com"
   password: ""
