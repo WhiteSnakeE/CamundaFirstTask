@@ -13,14 +13,17 @@ import org.springframework.stereotype.Component;
 @Component("SendEmailToEmployee")
 public class SendEmailToEmployeeTask implements JavaDelegate {
 
+    private final SendEmailService sendEmailService;
+
+    public SendEmailToEmployeeTask(SendEmailService sendEmailService){
+        this.sendEmailService = sendEmailService;
+    }
     @Override
     public void execute(DelegateExecution execution)  {
         log.info("sending only to employee");
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
-        SendEmailService sendEmailService = new SendEmailService();
-        EmailMessage emailMessage = new EmailMessage();
-        String message = emailMessage.setMessageEmployee(jiraIssue) ;
+        String message = EmailMessage.setMessageEmployee(jiraIssue) ;
         sendEmailService.send(jiraIssue.getEmail(), message);
     }
 }

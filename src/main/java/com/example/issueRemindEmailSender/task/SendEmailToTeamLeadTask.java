@@ -16,17 +16,17 @@ import org.springframework.stereotype.Component;
 @Component("SendEmailToTeamLead")
 public class SendEmailToTeamLeadTask implements JavaDelegate {
 
+    private final SendEmailService sendEmailService;
 
-
-
+    public SendEmailToTeamLeadTask(SendEmailService sendEmailService){
+        this.sendEmailService = sendEmailService;
+    }
     @Override
     public void execute(DelegateExecution execution)  {
         log.info("sending to team lead");
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
-        SendEmailService sendEmailService = new SendEmailService();
-        EmailMessage emailMessage = new EmailMessage();
-        String messageToBoss = emailMessage.setMessageBoss(jiraIssue);
+        String messageToBoss = EmailMessage.setMessageBoss(jiraIssue);
         sendEmailService.send(processEnv.getEmail(),messageToBoss);
     }
 }

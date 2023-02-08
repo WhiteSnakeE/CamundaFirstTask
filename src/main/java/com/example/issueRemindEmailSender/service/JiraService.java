@@ -47,7 +47,7 @@ public class JiraService {
     }
 
     public  boolean areNeedIssuePresents(List<JiraIssue> allIssuies)  {
-        return allIssuies.isEmpty();
+        return !allIssuies.isEmpty();
     }
 
     public static int lastUpdateDays(JiraIssue issue){

@@ -1,7 +1,9 @@
 package com.example.issueRemindEmailSender.service;
 
 import com.example.issueRemindEmailSender.configuration.EmailProperties;
+import com.example.issueRemindEmailSender.repository.SendEmailRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -10,18 +12,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Slf4j
+@Service
 public class SendEmailService {
 
     public static String sendMessageText;
+
+    private final SendEmailRepository sendEmailRepository;
+
+    public SendEmailService(SendEmailRepository sendEmailRepository){
+        this.sendEmailRepository =sendEmailRepository;
+    }
 
     public void send(String receiveEmail, String messageText)  {
         EmailProperties emailProperties = new EmailProperties();
         sendMessageText = messageText;
         log.info("Email preparation to {}", receiveEmail);
-        Session session = Session.getInstance(emailProperties.getProperties(), new Authenticator() {
+        Session session = Session.getInstance(sendEmailRepository.getProperties(), new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(emailProperties.getEmail(), emailProperties.getPassword());
+                return new PasswordAuthentication(sendEmailRepository.getEmail(), sendEmailRepository.getPassword());
             }
         });
 

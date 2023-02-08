@@ -3,13 +3,17 @@ package com.example.issueRemindEmailSender.repository;
 import com.example.issueRemindEmailSender.model.JiraIssue;
 import org.springframework.stereotype.Repository;
 
+import java.util.Properties;
+
 @Repository
-public interface EmailMessageRepository {
+public interface SendEmailRepository {
 
 
-    String setMessageEmployee(JiraIssue jiraIssue);
+    String getEmail();
 
-    String setMessageBoss(JiraIssue jiraIssue);
+    String getPassword();
+
+    Properties getProperties();
 
 
 }
