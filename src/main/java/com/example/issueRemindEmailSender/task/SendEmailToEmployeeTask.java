@@ -7,6 +7,7 @@ import com.example.issueRemindEmailSender.model.JiraIssue;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -17,14 +18,18 @@ public class SendEmailToEmployeeTask implements JavaDelegate {
 
     public SendEmailToEmployeeTask(SendEmailService sendEmailService){
         this.sendEmailService = sendEmailService;
+
     }
     @Override
     public void execute(DelegateExecution execution)  {
         log.info("sending only to employee");
+
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
         String message = EmailMessage.setMessageEmployee(jiraIssue) ;
+       // System.out.println("start" + new DateTime().getMinuteOfHour() + "." + new DateTime().getSecondOfMinute());
         sendEmailService.send(jiraIssue.getEmail(), message);
+       // System.out.println("end" + new DateTime().getMinuteOfHour() + "." + new DateTime().getSecondOfMinute());
     }
 }
 

@@ -9,8 +9,8 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component("CalcDelta")
-public class CalcDeltaTask implements JavaDelegate {
+@Component("CalculateNotUpdateDays")
+public class CalculateNotUpdateDaysTask implements JavaDelegate {
 
 
 

@@ -9,8 +9,8 @@ import java.time.format.DateTimeFormatter;
 
 
 @Slf4j
-@Component("GetLog")
-public class OutputLogTask implements JavaDelegate {
+@Component("GetStartTimeOfProcess")
+public class GetStartTimeOfProcessTask implements JavaDelegate {
 
 
     @Override

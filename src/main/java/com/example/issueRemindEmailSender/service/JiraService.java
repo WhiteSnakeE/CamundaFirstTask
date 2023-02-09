@@ -22,23 +22,29 @@ public class JiraService {
     private static final String JQL = "project = \"CamundaTraning\" and status!=done";
 
 
-    public JiraService( JiraRepository jiraRepository) {
+    public JiraService(JiraRepository jiraRepository) {
         this.jiraRepository = jiraRepository;
     }
 
 
     public List<JiraIssue> getIssuesFields() {
-        SearchResult searchResult = jiraRepository.getIssuesFields(JQL,maxResults);
+        SearchResult searchResult = jiraRepository.getIssuesFields(JQL, maxResults);
         Iterable<Issue> issues = searchResult.getIssues();
         List<JiraIssue> jiraIssues = new ArrayList<>();
+        ArrayList<String> emails = new ArrayList<>();
+        emails.add("123");
+        emails.add("gilent12345@gmail.com");
+        emails.add("vlad.kharchenko2003@gmail.com");
+        emails.add("super-vlad123456789@ukr.net");
 
-        for (Issue issue : issues) {
-            jiraIssues.add(JiraIssue.builder()
-                    .id(issue.getId())
-                    .createDate(issue.getCreationDate())
-                    .updateDate(issue.getUpdateDate())
-                    .statusName((issue.getStatus().getName()))
-                    .email(Objects.requireNonNull(issue.getReporter()).getEmailAddress()).build());
+            for (Issue issue : issues) {
+                jiraIssues.add(JiraIssue.builder()
+                        .id(issue.getId())
+                        .createDate(issue.getCreationDate())
+                        .updateDate(issue.getUpdateDate())
+                        .statusName((issue.getStatus().getName()))
+                        .email(Objects.requireNonNull(issue.getReporter()).getEmailAddress()).build());
+//            System.out.println(a);
 
         }
 
@@ -46,12 +52,12 @@ public class JiraService {
 
     }
 
-    public  boolean areNeedIssuePresents(List<JiraIssue> allIssuies)  {
+    public boolean areNeedIssuePresents(List<JiraIssue> allIssuies) {
         return !allIssuies.isEmpty();
     }
 
-    public static int lastUpdateDays(JiraIssue issue){
-        if(DateTime.now().getDayOfMonth()==issue.getUpdateDate().getDayOfMonth()) return 0;
+    public static int lastUpdateDays(JiraIssue issue) {
+        if (DateTime.now().getDayOfMonth() == issue.getUpdateDate().getDayOfMonth()) return 0;
         return (DateTime.now()
                 .minusSeconds(issue.getUpdateDate().getSecondOfMinute())
                 .minusMinutes(issue.getUpdateDate().getMinuteOfHour())

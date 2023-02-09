@@ -10,6 +10,7 @@ import com.example.issueRemindEmailSender.model.JiraIssue;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -27,7 +28,9 @@ public class SendEmailToTeamLeadTask implements JavaDelegate {
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
         String messageToBoss = EmailMessage.setMessageBoss(jiraIssue);
+       // System.out.println("start" + new DateTime().getMinuteOfHour() + "." + new DateTime().getSecondOfMinute());
         sendEmailService.send(processEnv.getEmail(),messageToBoss);
+       // System.out.println("end" + new DateTime().getMinuteOfHour() + "." + new DateTime().getSecondOfMinute());
     }
 }
 
