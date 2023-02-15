@@ -8,7 +8,7 @@
     <bpmn:group id="Group_15kf3n4" categoryValueRef="CategoryValue_0dg17k7" />
   </bpmn:collaboration>
   <bpmn:process id="IssueRemindEmailSender" name="IssueRemindEmailSender" isExecutable="true">
-    <bpmn:endEvent id="Event_0j8msu4" name="end" camunda:asyncBefore="true">
+    <bpmn:endEvent id="ProcedureEnded" name="procedure ended" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_1wjrft8</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:serviceTask id="GetAllIssuesTask" name="get All Issues" camunda:asyncBefore="true" camunda:delegateExpression="${GetAllIssues}">
@@ -20,7 +20,7 @@
         <bpmn:targetRef>Property_1xhcn28</bpmn:targetRef>
       </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="Event_164p5st" name="TaskStarted" camunda:asyncBefore="true">
+    <bpmn:startEvent id="TaskStarted" name="TaskStarted" camunda:asyncBefore="true">
       <bpmn:extensionElements>
         <camunda:formData />
       </bpmn:extensionElements>
@@ -38,7 +38,7 @@
         <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0/50 * * * ?</bpmn:timeCycle>
       </bpmn:timerEventDefinition>
     </bpmn:startEvent>
-    <bpmn:exclusiveGateway id="Gateway_00zfqa8" name="Are need issues Is present?" default="Flow_150o92i">
+    <bpmn:exclusiveGateway id="AreNeedIssuesArePresent" name="Are need issues are present?" default="Flow_150o92i">
       <bpmn:incoming>Flow_0wyuotr</bpmn:incoming>
       <bpmn:outgoing>Flow_0re1xyl</bpmn:outgoing>
       <bpmn:outgoing>Flow_150o92i</bpmn:outgoing>
@@ -49,79 +49,79 @@
       <bpmn:outgoing>Flow_1wjrft8</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:dataStoreReference id="DataStoreReference_0kqq4ib" name="jira" />
-    <bpmn:sequenceFlow id="Flow_1wjrft8" sourceRef="Gateway_1atrmhe" targetRef="Event_0j8msu4" />
+    <bpmn:sequenceFlow id="Flow_1wjrft8" sourceRef="Gateway_1atrmhe" targetRef="ProcedureEnded" />
     <bpmn:sequenceFlow id="Flow_1yhasty" sourceRef="Gateway_1w3puaw" targetRef="GetStartTimeOfProcessTask" />
-    <bpmn:sequenceFlow id="Flow_0wyuotr" sourceRef="GetAllIssuesTask" targetRef="Gateway_00zfqa8" />
-    <bpmn:sequenceFlow id="Flow_128sdaa" sourceRef="Event_164p5st" targetRef="Gateway_1w3puaw" />
+    <bpmn:sequenceFlow id="Flow_0wyuotr" sourceRef="GetAllIssuesTask" targetRef="AreNeedIssuesArePresent" />
+    <bpmn:sequenceFlow id="Flow_128sdaa" sourceRef="TaskStarted" targetRef="Gateway_1w3puaw" />
     <bpmn:sequenceFlow id="Flow_0zszmny" sourceRef="EveryFiveMinutes" targetRef="Gateway_1w3puaw" />
-    <bpmn:sequenceFlow id="Flow_0re1xyl" name="Yes" sourceRef="Gateway_00zfqa8" targetRef="Activity_0km20uu">
+    <bpmn:sequenceFlow id="Flow_0re1xyl" name="Yes" sourceRef="AreNeedIssuesArePresent" targetRef="Activity_0km20uu">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${areNeedIssueIsPresent == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_150o92i" name="No" sourceRef="Gateway_00zfqa8" targetRef="Gateway_1atrmhe" />
+    <bpmn:sequenceFlow id="Flow_150o92i" name="No" sourceRef="AreNeedIssuesArePresent" targetRef="Gateway_1atrmhe" />
     <bpmn:sequenceFlow id="Flow_103akeg" sourceRef="Activity_0km20uu" targetRef="Gateway_1atrmhe" />
     <bpmn:subProcess id="Activity_0km20uu" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_0re1xyl</bpmn:incoming>
       <bpmn:outgoing>Flow_103akeg</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics camunda:asyncBefore="true" camunda:collection="jiraIssues" camunda:elementVariable="issue" />
-      <bpmn:startEvent id="Event_0joziz9" name="All Issues collected">
+      <bpmn:startEvent id="AllIssuesCollected" name="All Issues collected">
         <bpmn:outgoing>Flow_0llnmh5</bpmn:outgoing>
       </bpmn:startEvent>
       <bpmn:serviceTask id="SendEmailToTeamLeadTask" name="send email to team lead" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailToTeamLead}">
         <bpmn:incoming>Flow_0q748uc</bpmn:incoming>
         <bpmn:outgoing>Flow_1l3sg70</bpmn:outgoing>
       </bpmn:serviceTask>
-      <bpmn:sequenceFlow id="Flow_0llnmh5" sourceRef="Event_0joziz9" targetRef="CalculateNotUpdateDaysTask" />
-      <bpmn:endEvent id="Event_164grpo" name="Email sended to boss and employee">
+      <bpmn:sequenceFlow id="Flow_0llnmh5" sourceRef="AllIssuesCollected" targetRef="CalculateNotUpdateDaysTask" />
+      <bpmn:endEvent id="EmailSendedToBossAndEmployee" name="Email sended to boss and employee">
         <bpmn:incoming>Flow_1l3sg70</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_1l3sg70" sourceRef="SendEmailToTeamLeadTask" targetRef="Event_164grpo" />
-      <bpmn:sequenceFlow id="Flow_04x3u39" sourceRef="CalculateNotUpdateDaysTask" targetRef="Gateway_0nnxpky" />
+      <bpmn:sequenceFlow id="Flow_1l3sg70" sourceRef="SendEmailToTeamLeadTask" targetRef="EmailSendedToBossAndEmployee" />
+      <bpmn:sequenceFlow id="Flow_04x3u39" sourceRef="CalculateNotUpdateDaysTask" targetRef="IssueWasNotUpdatingMoreFiveDays" />
       <bpmn:serviceTask id="CalculateNotUpdateDaysTask" name="calculate not update days" camunda:asyncBefore="true" camunda:delegateExpression="${CalculateNotUpdateDays}">
         <bpmn:incoming>Flow_0llnmh5</bpmn:incoming>
         <bpmn:outgoing>Flow_04x3u39</bpmn:outgoing>
       </bpmn:serviceTask>
-      <bpmn:exclusiveGateway id="Gateway_0nnxpky" name="issue was not updating more 5 days?" default="Flow_0d9t0u8">
+      <bpmn:exclusiveGateway id="IssueWasNotUpdatingMoreFiveDays" name="Issue was not updating more five days?" default="Flow_0d9t0u8">
         <bpmn:incoming>Flow_04x3u39</bpmn:incoming>
         <bpmn:outgoing>Flow_17ya30w</bpmn:outgoing>
         <bpmn:outgoing>Flow_0d9t0u8</bpmn:outgoing>
       </bpmn:exclusiveGateway>
-      <bpmn:sequenceFlow id="Flow_17ya30w" name="Yes" sourceRef="Gateway_0nnxpky" targetRef="SendEmailToEmployeeTask">
+      <bpmn:sequenceFlow id="Flow_17ya30w" name="Yes" sourceRef="IssueWasNotUpdatingMoreFiveDays" targetRef="SendEmailToEmployeeTask">
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${issue.getDelta()&gt;=5}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:serviceTask id="SendEmailToEmployeeTask" name="send email  to employee" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailToEmployee}">
         <bpmn:incoming>Flow_17ya30w</bpmn:incoming>
         <bpmn:outgoing>Flow_1i0dzy8</bpmn:outgoing>
       </bpmn:serviceTask>
-      <bpmn:endEvent id="Event_1qbshix" name="email sended  to employee" camunda:asyncBefore="true">
+      <bpmn:endEvent id="EmailSendedToEmployee" name="email sended  to employee" camunda:asyncBefore="true">
         <bpmn:incoming>Flow_0xim723</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_1i0dzy8" sourceRef="SendEmailToEmployeeTask" targetRef="Gateway_08rbfw2" />
-      <bpmn:exclusiveGateway id="Gateway_08rbfw2" name="issue was not updating more 10 days?" default="Flow_0xim723">
+      <bpmn:sequenceFlow id="Flow_1i0dzy8" sourceRef="SendEmailToEmployeeTask" targetRef="IssueWasNotUpdatingMoreTenDays" />
+      <bpmn:exclusiveGateway id="IssueWasNotUpdatingMoreTenDays" name="issue was not updating more 10 days?" default="Flow_0xim723">
         <bpmn:incoming>Flow_1i0dzy8</bpmn:incoming>
         <bpmn:outgoing>Flow_0xim723</bpmn:outgoing>
         <bpmn:outgoing>Flow_0lvqk34</bpmn:outgoing>
       </bpmn:exclusiveGateway>
-      <bpmn:sequenceFlow id="Flow_0xim723" name="no" sourceRef="Gateway_08rbfw2" targetRef="Event_1qbshix" />
+      <bpmn:sequenceFlow id="Flow_0xim723" name="no" sourceRef="IssueWasNotUpdatingMoreTenDays" targetRef="EmailSendedToEmployee" />
       <bpmn:businessRuleTask id="GetTeamLeadEmailTask" name="get team lead email" camunda:asyncBefore="true" camunda:resultVariable="email" camunda:decisionRef="EmailRules" camunda:mapDecisionResult="singleEntry">
         <bpmn:incoming>Flow_0lvqk34</bpmn:incoming>
         <bpmn:outgoing>Flow_0q748uc</bpmn:outgoing>
       </bpmn:businessRuleTask>
-      <bpmn:sequenceFlow id="Flow_0lvqk34" name="yes" sourceRef="Gateway_08rbfw2" targetRef="GetTeamLeadEmailTask">
+      <bpmn:sequenceFlow id="Flow_0lvqk34" name="yes" sourceRef="IssueWasNotUpdatingMoreTenDays" targetRef="GetTeamLeadEmailTask">
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${issue.getDelta()&gt;=10}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0q748uc" sourceRef="GetTeamLeadEmailTask" targetRef="SendEmailToTeamLeadTask" />
-      <bpmn:endEvent id="Event_1bedetw" name="nothing">
+      <bpmn:endEvent id="Nothing" name="nothing ">
         <bpmn:incoming>Flow_0d9t0u8</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_0d9t0u8" name="No" sourceRef="Gateway_0nnxpky" targetRef="Event_1bedetw" />
+      <bpmn:sequenceFlow id="Flow_0d9t0u8" name="No" sourceRef="IssueWasNotUpdatingMoreFiveDays" targetRef="Nothing" />
       <bpmn:boundaryEvent id="Event_1mhbdg0" camunda:asyncBefore="true" attachedToRef="SendEmailToEmployeeTask">
         <bpmn:outgoing>Flow_023zym7</bpmn:outgoing>
         <bpmn:errorEventDefinition id="ErrorEventDefinition_1761fei" errorRef="Error_049nqp3" />
       </bpmn:boundaryEvent>
-      <bpmn:endEvent id="Event_196w5wo" name="message not send" camunda:asyncBefore="true">
+      <bpmn:endEvent id="MessageNotSend" name="message not send" camunda:asyncBefore="true">
         <bpmn:incoming>Flow_023zym7</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_023zym7" name="Sending error" sourceRef="Event_1mhbdg0" targetRef="Event_196w5wo" />
+      <bpmn:sequenceFlow id="Flow_023zym7" name="Sending error" sourceRef="Event_1mhbdg0" targetRef="MessageNotSend" />
       <bpmn:textAnnotation id="TextAnnotation_1bcxitw">
         <bpmn:text>delta is count of days which issue is not updated</bpmn:text>
       </bpmn:textAnnotation>
@@ -150,17 +150,17 @@
         <dc:Bounds x="160" y="170" width="2400" height="840" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0j8msu4_di" bpmnElement="Event_0j8msu4">
+      <bpmndi:BPMNShape id="Event_0j8msu4_di" bpmnElement="ProcedureEnded">
         <dc:Bounds x="2502" y="432" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2510" y="478" width="19" height="14" />
+          <dc:Bounds x="2480" y="475" width="84" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1q9x04y_di" bpmnElement="GetAllIssuesTask">
         <dc:Bounds x="730" y="410" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0j8dpnt_di" bpmnElement="Event_164p5st">
+      <bpmndi:BPMNShape id="Event_0j8dpnt_di" bpmnElement="TaskStarted">
         <dc:Bounds x="212" y="362" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="203" y="405" width="59" height="14" />
@@ -175,10 +175,10 @@
           <dc:Bounds x="211" y="563" width="78" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_00zfqa8_di" bpmnElement="Gateway_00zfqa8" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_00zfqa8_di" bpmnElement="AreNeedIssuesArePresent" isMarkerVisible="true">
         <dc:Bounds x="935" y="425" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="920" y="388" width="79" height="27" />
+          <dc:Bounds x="921" y="388" width="79" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1atrmhe_di" bpmnElement="Gateway_1atrmhe" isMarkerVisible="true">
@@ -193,7 +193,7 @@
       <bpmndi:BPMNShape id="Activity_0km20uu_di" bpmnElement="Activity_0km20uu" isExpanded="true">
         <dc:Bounds x="1150" y="240" width="1120" height="640" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0joziz9_di" bpmnElement="Event_0joziz9">
+      <bpmndi:BPMNShape id="Event_0joziz9_di" bpmnElement="AllIssuesCollected">
         <dc:Bounds x="1192" y="402" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1187" y="445" width="47" height="27" />
@@ -203,29 +203,33 @@
         <dc:Bounds x="2000" y="530" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_164grpo_di" bpmnElement="Event_164grpo">
+      <bpmndi:BPMNShape id="Event_164grpo_di" bpmnElement="EmailSendedToBossAndEmployee">
         <dc:Bounds x="2182" y="552" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2162" y="595" width="80" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0nnxpky_di" bpmnElement="Gateway_0nnxpky" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Activity_1brs30k_di" bpmnElement="CalculateNotUpdateDaysTask">
+        <dc:Bounds x="1340" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0nnxpky_di" bpmnElement="IssueWasNotUpdatingMoreFiveDays" isMarkerVisible="true">
         <dc:Bounds x="1485" y="395" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1475" y="340" width="80" height="40" />
+          <dc:Bounds x="1480" y="340" width="71" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0vcnjxq_di" bpmnElement="SendEmailToEmployeeTask">
         <dc:Bounds x="1580" y="380" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1qbshix_di" bpmnElement="Event_1qbshix">
+      <bpmndi:BPMNShape id="Event_1qbshix_di" bpmnElement="EmailSendedToEmployee">
         <dc:Bounds x="2182" y="402" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2168" y="445" width="66" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_08rbfw2_di" bpmnElement="Gateway_08rbfw2" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_08rbfw2_di" bpmnElement="IssueWasNotUpdatingMoreTenDays" isMarkerVisible="true">
         <dc:Bounds x="1715" y="395" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1699" y="340" width="86" height="40" />
@@ -235,30 +239,22 @@
         <dc:Bounds x="1790" y="530" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1bedetw_di" bpmnElement="Event_1bedetw">
+      <bpmndi:BPMNShape id="Event_1bedetw_di" bpmnElement="Nothing">
         <dc:Bounds x="2182" y="652" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2183" y="703" width="37" height="14" />
+          <dc:Bounds x="2183" y="695" width="37" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_196w5wo_di" bpmnElement="MessageNotSend">
+        <dc:Bounds x="2182" y="762" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2168" y="805" width="64" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1bcxitw_di" bpmnElement="TextAnnotation_1bcxitw">
         <dc:Bounds x="1320" y="260" width="100" height="70" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_196w5wo_di" bpmnElement="Event_196w5wo">
-        <dc:Bounds x="2182" y="762" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2168" y="805" width="64" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1brs30k_di" bpmnElement="CalculateNotUpdateDaysTask">
-        <dc:Bounds x="1340" y="380" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_1u2y6zl_di" bpmnElement="Association_1u2y6zl">
-        <di:waypoint x="1385" y="380" />
-        <di:waypoint x="1377" y="330" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1ez2r6c_di" bpmnElement="Event_1mhbdg0">
         <dc:Bounds x="1632" y="442" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -319,6 +315,10 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1656" y="513" width="68" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1u2y6zl_di" bpmnElement="Association_1u2y6zl">
+        <di:waypoint x="1385" y="380" />
+        <di:waypoint x="1377" y="330" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_1me3col_di" bpmnElement="GetStartTimeOfProcessTask">
         <dc:Bounds x="540" y="410" width="100" height="80" />

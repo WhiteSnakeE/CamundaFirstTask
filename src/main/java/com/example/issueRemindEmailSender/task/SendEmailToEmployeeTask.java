@@ -26,10 +26,9 @@ public class SendEmailToEmployeeTask implements JavaDelegate {
 
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
-        String message = EmailMessage.setMessageEmployee(jiraIssue) ;
-       // System.out.println("start" + new DateTime().getMinuteOfHour() + "." + new DateTime().getSecondOfMinute());
+        String message = EmailMessage.setMessageEmployee(jiraIssue);
         sendEmailService.send(jiraIssue.getEmail(), message);
-       // System.out.println("end" + new DateTime().getMinuteOfHour() + "." + new DateTime().getSecondOfMinute());
+
     }
 }
 

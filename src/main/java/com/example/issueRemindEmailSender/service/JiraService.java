@@ -31,11 +31,11 @@ public class JiraService {
         SearchResult searchResult = jiraRepository.getIssuesFields(JQL, maxResults);
         Iterable<Issue> issues = searchResult.getIssues();
         List<JiraIssue> jiraIssues = new ArrayList<>();
-        ArrayList<String> emails = new ArrayList<>();
-        emails.add("123");
-        emails.add("gilent12345@gmail.com");
-        emails.add("vlad.kharchenko2003@gmail.com");
-        emails.add("super-vlad123456789@ukr.net");
+//        ArrayList<String> emails = new ArrayList<>();
+//        emails.add("123");
+//        emails.add("gilent12345@gmail.com");
+//        emails.add("vlad.kharchenko2003@gmail.com");
+//        emails.add("super-vlad123456789@ukr.net");
 
             for (Issue issue : issues) {
                 jiraIssues.add(JiraIssue.builder()
@@ -52,9 +52,9 @@ public class JiraService {
 
     }
 
-    public boolean areNeedIssuePresents(List<JiraIssue> allIssuies) {
-        return !allIssuies.isEmpty();
-    }
+//    public static boolean areNeedIssuePresents(List<JiraIssue> allIssuies) {
+//        return !allIssuies.isEmpty();
+//    }
 
     public static int lastUpdateDays(JiraIssue issue) {
         if (DateTime.now().getDayOfMonth() == issue.getUpdateDate().getDayOfMonth()) return 0;

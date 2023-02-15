@@ -14,12 +14,9 @@ import org.springframework.context.annotation.Profile;
 @Profile("!springtest")
 public class FirstCamundaTaskApplication  {
 
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-//        return application.sources(FirstCamundaTaskApplication.class).sources(CamundaConfiguration.class);
-//    }
 
     public static void main(String[] args) {
         SpringApplication.run(FirstCamundaTaskApplication.class, args);
     }
+
 }

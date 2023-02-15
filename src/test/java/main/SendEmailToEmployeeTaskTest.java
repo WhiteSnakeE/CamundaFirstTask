@@ -39,7 +39,7 @@ public class SendEmailToEmployeeTaskTest {
         String message = "a";
         //test
         ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
-        doNothing().when(sendEmailService).send(any(),any());
+        when(sendEmailService.send(any(),any())).thenReturn(true);
         task.execute(execution);
 
 

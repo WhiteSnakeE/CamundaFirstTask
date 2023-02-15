@@ -26,8 +26,7 @@ public class SendEmailService {
         this.sendEmailRepository = sendEmailRepository;
     }
 
-    public void send(String receiveEmail, String messageText)  {
-       // System.out.println("send start " + new DateTime().getSecondOfMinute() + "." + new DateTime().getMillisOfSecond() );
+    public boolean send(String receiveEmail, String messageText)  {
         EmailProperties emailProperties = new EmailProperties();
         sendMessageText = messageText;
         log.info("Email preparation to {}", receiveEmail);
@@ -41,17 +40,15 @@ public class SendEmailService {
         Message message = prepareMessage(session, emailProperties.getEmail(), receiveEmail);
 
         try {
-           // System.out.println("Transport send start " + new DateTime().getSecondOfMinute() + "." + new DateTime().getMillisOfSecond() );
             Transport.send(message);
-          //  System.out.println("Transport send end " + new DateTime().getSecondOfMinute() + "." + new DateTime().getMillisOfSecond() );
             log.info("Message sent successfully");
         } catch (MessagingException e) {
-
             e.printStackTrace();
             log.info("Message was not send");
             throw new BpmnError("SOLVIT_ERROR", e.getMessage());
+
         }
-      //  System.out.println("send end " + new DateTime().getSecondOfMinute() + "." + new DateTime().getMillisOfSecond() );
+        return true;
     }
 
     private Message prepareMessage(Session session, String myAccountEmail, String recipient) {

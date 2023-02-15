@@ -26,7 +26,7 @@ public class GetAllIssuesTask implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution)  {
         List<JiraIssue> allIssuies = jiraService.getIssuesFields();
-        boolean areAllIssuesNull = jiraService.areNeedIssuePresents(allIssuies);
+        boolean areAllIssuesNull = !allIssuies.isEmpty();
         log.info("All Issues - {}", allIssuies);
         ProcessEnv processEnv = new ProcessEnv(execution);
         processEnv.setAreNeedIssuesPresent(areAllIssuesNull);

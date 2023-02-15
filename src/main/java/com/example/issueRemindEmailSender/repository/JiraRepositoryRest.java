@@ -6,6 +6,8 @@ import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import java.util.concurrent.ExecutionException;
+
 
 @Repository
 @Profile({"dev"})
@@ -20,7 +22,12 @@ public class JiraRepositoryRest implements JiraRepository {
 
     @Override
     public SearchResult getIssuesFields(String jql, int maxResults) {
-        return searchRestClient.searchJql(jql, maxResults, 0, null).claim();
+        try {
+            return searchRestClient.searchJql(jql, maxResults, 0, null).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

@@ -28,9 +28,7 @@ public class SendEmailToTeamLeadTask implements JavaDelegate {
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
         String messageToBoss = EmailMessage.setMessageBoss(jiraIssue);
-       // System.out.println("start" + new DateTime().getMinuteOfHour() + "." + new DateTime().getSecondOfMinute());
         sendEmailService.send(processEnv.getEmail(),messageToBoss);
-       // System.out.println("end" + new DateTime().getMinuteOfHour() + "." + new DateTime().getSecondOfMinute());
     }
 }
 

@@ -35,7 +35,7 @@ public class SendEmailToTeamLeadTaskTest {
         when(execution.getVariable(ProcessEnv.EMAIL)).thenReturn("surtx0119@gmail.com");
 
         //test
-        doNothing().when(sendEmailService).send(any(),any());
+        when(sendEmailService.send(any(),any())).thenReturn(true);
         task.execute(execution);
 
 
