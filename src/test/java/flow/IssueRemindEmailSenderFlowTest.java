@@ -1,6 +1,7 @@
 package flow;
 
 import com.example.issueRemindEmailSender.model.JiraIssue;
+import com.example.issueRemindEmailSender.service.EmailMessage;
 import com.example.issueRemindEmailSender.service.JiraService;
 import com.example.issueRemindEmailSender.service.SendEmailService;
 import com.example.issueRemindEmailSender.task.*;
@@ -69,20 +70,19 @@ public class IssueRemindEmailSenderFlowTest {
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue1);
         jiraIssueList.add(jiraIssue);
-        // when(execution.getVariable(ProcessEnv.ARE_NEED_ISSUES_PRESENT)).thenReturn(true);
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
 
         Scenario.run(main).
                 startByKey("IssueRemindEmailSender"
                 ).execute();
 
-        verify(main).hasStarted("EveryFiveMinutes");
+        verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main, times(2)).hasCompleted("AllIssuesCollected");
+        verify(main, times(2)).hasCompleted("AllIssuesCollectedStartEvent");
         verify(main, times(2)).hasCompleted("SendEmailToEmployeeTask");
         verify(main, times(2)).hasCompleted("SendEmailToTeamLeadTask");
-        verify(main, times(2)).hasFinished("EmailSendedToBossAndEmployee");
+        verify(main, times(2)).hasFinished("EmailSendedToBossAndEmployeeEndEvent");
 
 
     }
@@ -95,11 +95,11 @@ public class IssueRemindEmailSenderFlowTest {
                 startByKey("IssueRemindEmailSender"
                 ).execute();
 
-        verify(main).hasStarted("EveryFiveMinutes");
+        verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main, never()).hasStarted("AllIssuesCollected");
-        verify(main).hasFinished("ProcedureEnded");
+        verify(main, never()).hasStarted("AllIssuesCollectedStartEvent");
+        verify(main).hasFinished("ProcedureEndEvent");
 
     }
 
@@ -114,19 +114,19 @@ public class IssueRemindEmailSenderFlowTest {
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue1);
         jiraIssueList.add(jiraIssue);
-        //when(jiraService.areNeedIssuePresents(any())).thenReturn(true);
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
 
         Scenario.run(main).
                 startByKey("IssueRemindEmailSender"
                 ).execute();
 
-        verify(main).hasStarted("EveryFiveMinutes");
+        verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main, times(2)).hasCompleted("AllIssuesCollected");
+        verify(main, times(2)).hasCompleted("AllIssuesCollectedStartEvent");
         verify(main, never()).hasCompleted("SendEmailToEmployeeTask");
-        verify(main, times(2)).hasFinished("Nothing");
+        verify(main, times(2)).hasFinished("NothingEndEvent");
+        verify(main).hasFinished("ProcedureEndEvent");
 
 
     }
@@ -135,24 +135,21 @@ public class IssueRemindEmailSenderFlowTest {
     public void emailNotSended() throws IOException {
         ProcessScenario main = mock(ProcessScenario.class);
         JiraIssue jiraIssue = getJiraIssue();
-        JiraIssue jiraIssue1 = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
-        jiraIssueList.add(jiraIssue1);
         jiraIssueList.add(jiraIssue);
-        // when(jiraService.areNeedIssuePresents(any())).thenReturn(true);
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
         when(sendEmailService.send(anyString(), anyString())).thenThrow(new BpmnError("SOLVIT_ERROR"));
         Scenario.run(main).
                 startByKey("IssueRemindEmailSender"
                 ).execute();
 
-        verify(main).hasStarted("EveryFiveMinutes");
+        verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main, times(2)).hasCompleted("AllIssuesCollected");
-        verify(main, times(2)).hasCanceled("SendEmailToEmployeeTask");
-        verify(main, times(2)).hasFinished("MessageNotSend");
-        verify(main).hasFinished("ProcedureEnded");
+        verify(main).hasCompleted("AllIssuesCollectedStartEvent");
+        verify(main).hasCanceled("SendEmailToEmployeeTask");
+        verify(main).hasFinished("MessageNotSendEndEvent");
+        verify(main).hasFinished("ProcedureEndEvent");
 
 
     }
@@ -169,24 +166,80 @@ public class IssueRemindEmailSenderFlowTest {
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue1);
         jiraIssueList.add(jiraIssue);
-        // when(jiraService.areNeedIssuePresents(any())).thenReturn(true);
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
 
         Scenario.run(main).
                 startByKey("IssueRemindEmailSender"
                 ).execute();
 
-
-        verify(main).hasStarted("EveryFiveMinutes");
+        verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main, times(2)).hasCompleted("AllIssuesCollected");
+        verify(main, times(2)).hasCompleted("AllIssuesCollectedStartEvent");
         verify(main, times(2)).hasCompleted("SendEmailToEmployeeTask");
-        verify(main, times(2)).hasFinished("EmailSendedToEmployee");
+        verify(main, times(2)).hasFinished("EmailSendedToEmployeeEndEvent");
         verify(main, never()).hasCompleted("SendEmailToTeamLeadTask");
+        verify(main).hasFinished("ProcedureEndEvent");
+    }
+    @Test
+    public void allSubProcessTest() throws IOException {
+        ProcessScenario main = mock(ProcessScenario.class);
+        List<JiraIssue> jiraIssueList = new ArrayList<>();
+        JiraIssue jiraIssueWrong = getJiraIssue();
+        jiraIssueWrong.setEmail("wrong email");
+        jiraIssueList.add(jiraIssueWrong);
+        JiraIssue jiraIssueToEmp = getJiraIssue();
+        jiraIssueToEmp.setUpdateDate(new DateTime().minusDays(6));
+        jiraIssueList.add(jiraIssueToEmp);
+        JiraIssue jiraIssueToTeamLead = getJiraIssue();
+        jiraIssueToTeamLead.setUpdateDate(new DateTime().minusDays(11));
+        jiraIssueList.add(jiraIssueToTeamLead);
+        JiraIssue jiraIssueNotSend = getJiraIssue();
+        jiraIssueNotSend.setUpdateDate(new DateTime());
+        jiraIssueList.add(jiraIssueNotSend);
+        when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
+        String message = EmailMessage.setMessageEmployee(jiraIssueWrong);
+        when(sendEmailService.send(jiraIssueWrong.getEmail(),message)).thenThrow(new BpmnError("SOLVIT_ERROR"));
+
+        Scenario.run(main).
+                startByKey("IssueRemindEmailSender"
+                ).execute();
+
+        verify(main).hasStarted("EveryFiveMinutesStartEvent");
+        verify(main).hasCompleted("GetStartTimeOfProcessTask");
+        verify(main).hasCompleted("GetAllIssuesTask");
+        verify(main,times(4)).hasCompleted("AllIssuesCollectedStartEvent");
+        verify(main,times(4)).hasCompleted("CalculateNotUpdateDaysTask");
+        verify(main).hasCanceled("SendEmailToEmployeeTask");
+        verify(main,times(2)).hasCompleted("SendEmailToEmployeeTask");
+        verify(main).hasCompleted("SendEmailToTeamLeadTask");
+        verify(main).hasFinished("MessageNotSendEndEvent");
+        verify(main).hasFinished("EmailSendedToEmployeeEndEvent");
+        verify(main).hasFinished("EmailSendedToBossAndEmployeeEndEvent");
+        verify(main).hasFinished("NothingEndEvent");
 
     }
 
+    @Test
+    public void jiraWasNotTaken() throws IOException {
+        ProcessScenario main = mock(ProcessScenario.class);
+        JiraIssue jiraIssue = getJiraIssue();
+        List<JiraIssue> jiraIssueList = new ArrayList<>();
+        jiraIssueList.add(jiraIssue);
+        when(jiraService.getIssuesFields()).thenThrow(new BpmnError("SOLVIT_ERROR"));
+        Scenario.run(main).
+                startByKey("IssueRemindEmailSender"
+                ).execute();
+
+        verify(main).hasStarted("EveryFiveMinutesStartEvent");
+        verify(main).hasCompleted("GetStartTimeOfProcessTask");
+        verify(main,times(3)).hasCanceled("GetAllIssuesTask");
+        verify(main,times(3)).hasFinished("IsItThirdAttemptGateway");
+        verify(main,times(2)).hasFinished("PauseOneMinuteTimerCatchEvent");
+        verify(main).hasFinished("JiraWasNotResponceEndEvent");
+
+
+    }
 
     private JiraIssue getJiraIssue() throws IOException {
         String object = IOUtils.resourceToString("/data/jiraIssue.json", Charset.defaultCharset());

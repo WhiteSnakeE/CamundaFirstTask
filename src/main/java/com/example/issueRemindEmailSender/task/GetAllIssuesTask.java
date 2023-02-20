@@ -7,10 +7,13 @@ import com.example.issueRemindEmailSender.model.JiraIssue;
 import com.example.issueRemindEmailSender.service.JiraService;
 import lombok.extern.slf4j.Slf4j;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
+import javax.mail.Transport;
 import java.util.List;
 
 @Slf4j
@@ -25,10 +28,11 @@ public class GetAllIssuesTask implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution)  {
+        ProcessEnv processEnv = new ProcessEnv(execution);
+        processEnv.setJiraAttemptsCount(processEnv.getJiraAttemptsCount() + 1);
         List<JiraIssue> allIssuies = jiraService.getIssuesFields();
         boolean areAllIssuesNull = !allIssuies.isEmpty();
         log.info("All Issues - {}", allIssuies);
-        ProcessEnv processEnv = new ProcessEnv(execution);
         processEnv.setAreNeedIssuesPresent(areAllIssuesNull);
         processEnv.setJiraIssues(allIssuies);
 

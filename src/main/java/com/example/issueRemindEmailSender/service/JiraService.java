@@ -5,9 +5,12 @@ import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.example.issueRemindEmailSender.model.JiraIssue;
 import com.example.issueRemindEmailSender.repository.JiraRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.Transport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,14 +31,18 @@ public class JiraService {
 
 
     public List<JiraIssue> getIssuesFields() {
-        SearchResult searchResult = jiraRepository.getIssuesFields(JQL, maxResults);
+        SearchResult searchResult;
+        try {
+            searchResult = jiraRepository.getIssuesFields(JQL, maxResults);
+            log.info("Jira taken successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("Jira was not taken");
+            throw new BpmnError("SOLVIT_ERROR", e.getMessage());
+        }
+       ;
         Iterable<Issue> issues = searchResult.getIssues();
         List<JiraIssue> jiraIssues = new ArrayList<>();
-//        ArrayList<String> emails = new ArrayList<>();
-//        emails.add("123");
-//        emails.add("gilent12345@gmail.com");
-//        emails.add("vlad.kharchenko2003@gmail.com");
-//        emails.add("super-vlad123456789@ukr.net");
 
             for (Issue issue : issues) {
                 jiraIssues.add(JiraIssue.builder()
@@ -44,17 +51,12 @@ public class JiraService {
                         .updateDate(issue.getUpdateDate())
                         .statusName((issue.getStatus().getName()))
                         .email(Objects.requireNonNull(issue.getReporter()).getEmailAddress()).build());
-//            System.out.println(a);
 
         }
 
         return jiraIssues;
 
     }
-
-//    public static boolean areNeedIssuePresents(List<JiraIssue> allIssuies) {
-//        return !allIssuies.isEmpty();
-//    }
 
     public static int lastUpdateDays(JiraIssue issue) {
         if (DateTime.now().getDayOfMonth() == issue.getUpdateDate().getDayOfMonth()) return 0;

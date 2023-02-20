@@ -11,9 +11,9 @@ import java.util.Properties;
 public class SenEmailRepositoryImpl implements SendEmailRepository{
 
     @Value("${mail.username}")
-    private String email = "surtx0119@gmail.com";
+    private String email;
     @Value("${mail.password}")
-    private String password = "";
+    private String password;
 
     @Override
     public Properties getProperties() {

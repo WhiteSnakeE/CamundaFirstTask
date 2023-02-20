@@ -5,13 +5,19 @@ import com.example.issueRemindEmailSender.ProcessEnv;
 import com.example.issueRemindEmailSender.model.JiraIssue;
 import com.example.issueRemindEmailSender.service.JiraService;
 import com.example.issueRemindEmailSender.task.CalculateNotUpdateDaysTask;
+import org.apache.commons.io.IOUtils;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,13 +32,12 @@ public class CalculateNotUpdateDaysTaskTest {
 	private CalculateNotUpdateDaysTask task;
 
 	@Test
-	public void testExecute() {
+	public void testExecute() throws IOException {
 
 		//prepare
 
-		JiraIssue jiraIssue = JiraIssue.builder().id(14411L).updateDate(DateTime.parse("2023-01-29T10:53:22.289+0200")).createDate(DateTime.parse("2023-01-30T10:53:18.127+0200")).email("test@gmail.com").statusName("To Do").build();
-		int data = JiraService.lastUpdateDays(jiraIssue);
-		JiraIssue jiraIssueExpected = JiraIssue.builder().id(14411L).updateDate(DateTime.parse("2023-01-29T10:53:22.289+0200")).createDate(DateTime.parse("2023-01-30T10:53:18.127+0200")).email("test@gmail.com").statusName("To Do").build();
+		JiraIssue jiraIssue = getJiraIssue();
+		JiraIssue jiraIssueExpected = getJiraIssue() ;
 		int data2 = JiraService.lastUpdateDays(jiraIssueExpected);
 		jiraIssueExpected.setDelta(data2);
 
@@ -46,22 +51,15 @@ public class CalculateNotUpdateDaysTaskTest {
 
 	}
 
-	@Test
-	public void testExecute_2() {
 
-		//prepare
-		JiraIssue jiraIssue = JiraIssue.builder().id(14411L).updateDate(DateTime.parse("2023-01-30T10:53:22.289+0200")).createDate(DateTime.parse("2023-01-30T10:53:18.127+0200")).email("test@gmail.com").statusName("To Do").build();
-		JiraIssue jiraIssueExpected = JiraIssue.builder().id(14411L).updateDate(DateTime.parse("2023-01-30T10:53:22.289+0200")).createDate(DateTime.parse("2023-01-30T10:53:18.127+0200")).email("test@gmail.com").statusName("To Do").build();
-		jiraIssueExpected.setDelta(4);
-
-		when(execution.getVariable(ProcessEnv.ISSUE)).thenReturn(jiraIssue);
-
-		//test
-		task.execute(execution);
-
-		//verify
-		verify(execution).setVariable(ProcessEnv.ISSUE, jiraIssue);
-
+	private JiraIssue getJiraIssue() throws IOException {
+		String object = IOUtils.resourceToString("/data/jiraIssue.json", Charset.defaultCharset());
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readValue(object, JiraIssue.class);
+		} catch (JsonProcessingException e) {
+			throw new IllegalArgumentException("Can not deserialize solvitCase", e);
+		}
 	}
 
 }
