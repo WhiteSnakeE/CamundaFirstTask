@@ -9,8 +9,6 @@ import org.camunda.bpm.engine.delegate.BpmnError;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.Transport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
