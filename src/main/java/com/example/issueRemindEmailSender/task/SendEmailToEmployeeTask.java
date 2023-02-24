@@ -23,7 +23,6 @@ public class SendEmailToEmployeeTask implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution)  {
         log.info("sending only to employee");
-
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
         String message = EmailMessage.setMessageEmployee(jiraIssue);

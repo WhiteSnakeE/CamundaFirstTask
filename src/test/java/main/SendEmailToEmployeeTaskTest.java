@@ -4,6 +4,7 @@ package main;
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.example.issueRemindEmailSender.ProcessEnv;
 import com.example.issueRemindEmailSender.model.JiraIssue;
+import com.example.issueRemindEmailSender.service.EmailMessage;
 import com.example.issueRemindEmailSender.service.SendEmailService;
 import com.example.issueRemindEmailSender.task.SendEmailToEmployeeTask;
 import org.apache.commons.io.IOUtils;
@@ -42,13 +43,11 @@ public class SendEmailToEmployeeTaskTest {
         jiraIssue.setDelta(4);
         when(execution.getVariable(ProcessEnv.ISSUE)).thenReturn(jiraIssue);
 
-
+        String message = EmailMessage.setMessageEmployee(jiraIssue);
         //test
 
-        when(sendEmailService.send(any(),any())).thenReturn(true);
+        when(sendEmailService.send(jiraIssue.getEmail(),message)).thenReturn(true);
         task.execute(execution);
-
-
         //verify
         verify(execution).getVariable(ProcessEnv.ISSUE);
 

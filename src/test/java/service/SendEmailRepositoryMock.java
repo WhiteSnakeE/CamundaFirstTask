@@ -4,22 +4,36 @@ import com.example.issueRemindEmailSender.repository.SendEmailRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import java.util.Properties;
 
 @Repository
 @Profile({"dev"})
 public class SendEmailRepositoryMock implements SendEmailRepository {
+
+    @Override
+    public Session getSession() {
+        return Session.getInstance(getProperties(), new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(getEmail(), getPassword());
+            }
+        });
+    }
+
     @Override
     public String getEmail() {
         return "vlad.kharchenko2003@gmail.com";
     }
 
-    @Override
+
     public String getPassword() {
         return "";
     }
 
-    @Override
+
     public Properties getProperties() {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");

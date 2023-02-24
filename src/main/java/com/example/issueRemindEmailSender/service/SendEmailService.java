@@ -24,18 +24,9 @@ public class SendEmailService {
     }
 
     public boolean send(String receiveEmail, String messageText)  {
-
         sendMessageText = messageText;
-        log.info("Email preparation to {}", receiveEmail);
-        Session session = Session.getInstance(sendEmailRepository.getProperties(), new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(sendEmailRepository.getEmail(), sendEmailRepository.getPassword());
-            }
-        });
-
+        Session session = sendEmailRepository.getSession();
         Message message = prepareMessage(session, sendEmailRepository.getEmail(), receiveEmail);
-
         try {
             Transport.send(message);
             log.info("Message sent successfully");
@@ -43,7 +34,6 @@ public class SendEmailService {
             e.printStackTrace();
             log.info("Message was not send");
             throw new BpmnError("SOLVIT_ERROR", e.getMessage());
-
         }
         return true;
     }

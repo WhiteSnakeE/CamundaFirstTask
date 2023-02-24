@@ -9,16 +9,24 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
+
+
 public class SendEmailServiceTest {
+
+
 
     SendEmailService sendEmailService = new SendEmailService(new SendEmailRepositoryMock());
 
@@ -29,7 +37,11 @@ public class SendEmailServiceTest {
     void sendEmail() throws Exception {
         JiraIssue jiraIssue = getJiraIssue();
         assertEquals(jiraIssue.getEmail(),"surtx0119@gmail.com");
+        //when(sendEmailService.send(jiraIssue.getEmail(), EmailMessage.setMessageEmployee(jiraIssue))).thenReturn(true);
         assertTrue(sendEmailService.send(jiraIssue.getEmail(), EmailMessage.setMessageEmployee(jiraIssue)));
+
+       // verify(sendEmailService);
+
 
 
 
