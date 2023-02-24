@@ -1,4 +1,5 @@
 package com.example.issueRemindEmailSender.task;
+
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -14,10 +15,10 @@ public class GetStartTimeOfProcessTask implements JavaDelegate {
 
 
     @Override
-    public void execute(DelegateExecution execution)  {
+    public void execute(DelegateExecution execution) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        log.info("Start time of this event is {}",dtf.format(now));
+        log.info("Start time of this event is {}", dtf.format(now));
 
 
     }

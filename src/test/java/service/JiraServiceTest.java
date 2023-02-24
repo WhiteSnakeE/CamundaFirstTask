@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class JiraServiceTest {
     private static final Long ID = 14388L;
-   // private static final String email = 14388L;
+
 
     JiraService jiraService = new JiraService(new JiraRepositoryMock());
 
@@ -39,13 +39,7 @@ public class JiraServiceTest {
 
         assertEquals(jiraIssueList.size(),5);
         assertEquals(jiraIssueList.get(0),jiraIssue);
-        //JiraIssue jiraIssue = issues.iterator().next();
-//        assertEquals(jiraIssueList.get(4).getId(),ID);
-//        assertEquals(jiraIssueList.get(0).getEmail(),ID);
-//        assertEquals(jiraIssueList.get(1).getEmail(),ID);
-//        assertEquals(jiraIssueList.get(2).getEmail(),ID);
-//        assertEquals(jiraIssueList.get(3).getEmail(),ID);
-//        assertEquals(jiraIssueList.get(4).getEmail(),ID);
+
 
 
     }

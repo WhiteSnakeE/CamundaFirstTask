@@ -21,6 +21,17 @@ spring:
 mail:
   password: ""
   username: "surtx0119@gmail.com"
+  smtp:
+    auth: "true"
+    host: "smtp.gmail.com"
+    port: "587"
+    ssl:
+      trust: "smtp.gmail.com"
+      protocols: "TLSv1.2"
+    starttls:
+      enable: "true"
+
+
 jira :
   user: "vladyslav.kharchenko@sytoss.com"
   password: ""
