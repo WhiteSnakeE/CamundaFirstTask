@@ -20,7 +20,7 @@ public class CalculateNotUpdateDaysTask implements JavaDelegate {
         int days = JiraService.lastUpdateDays(jiraIssue);
         jiraIssue.setDelta(days);
         processEnv.setJiraIssues(jiraIssue);
-        log.info("Delta is {}, {}", days, execution.getProcessInstance());
+        log.info("Delta is {}", days);
 
     }
 }

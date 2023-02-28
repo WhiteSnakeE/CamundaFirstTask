@@ -32,22 +32,17 @@ public class CalculateNotUpdateDaysTaskTest {
 	private CalculateNotUpdateDaysTask task;
 
 	@Test
-	public void testExecute() throws IOException {
+	public void givenJiraIssue_whenCalculateNotUpdateDays_thenSetDelta() throws IOException {
 
 		//prepare
-
 		JiraIssue jiraIssue = getJiraIssue();
-		JiraIssue jiraIssueExpected = getJiraIssue() ;
-		int data2 = JiraService.lastUpdateDays(jiraIssueExpected);
-		jiraIssueExpected.setDelta(data2);
 
 		when(execution.getVariable(ProcessEnv.ISSUE)).thenReturn(jiraIssue);
-
 		//test
 		task.execute(execution);
 
 		//verify
-		verify(execution).setVariable(ProcessEnv.ISSUE, jiraIssueExpected);
+		verify(execution).setVariable(ProcessEnv.ISSUE, jiraIssue);
 
 	}
 

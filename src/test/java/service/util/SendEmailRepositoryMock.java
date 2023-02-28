@@ -1,39 +1,59 @@
-package com.example.issueRemindEmailSender.repository;
+package service.util;
 
-import com.example.issueRemindEmailSender.configuration.SendEmailConfiguration;
+import com.example.issueRemindEmailSender.repository.SendEmailRepository;
 import com.example.issueRemindEmailSender.service.SendEmailService;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Repository
-@Getter
+@Profile({"dev"})
 @Slf4j
-public class SenEmailRepositoryImpl implements SendEmailRepository {
+public class SendEmailRepositoryMock implements SendEmailRepository {
     public static String sendMessageText;
 
-    private final SendEmailConfiguration sendEmailConfiguration;
-
-    public SenEmailRepositoryImpl(SendEmailConfiguration sendEmailConfiguration) {
-        this.sendEmailConfiguration = sendEmailConfiguration;
+    public String getEmail() {
+        return "vlad.kharchenko2003@gmail.com";
     }
 
+
+    public String getPassword() {
+        return "";
+    }
+
+
+    public Properties getProperties() {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        return properties;
+    }
+    public Session getSession() {
+        return Session.getInstance(getProperties(), new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(getEmail(), getPassword());
+            }
+        });
+    }
 
     @Override
     public boolean send(String receiveEmail, String messageText) {
         sendMessageText = messageText;
-        Session session = sendEmailConfiguration.getSession();
-        Message message = prepareMessage(session, sendEmailConfiguration.getEmail(), receiveEmail);
-        System.out.println(sendEmailConfiguration.getEmail());
+        Session session = getSession();
+        Message message = prepareMessage(session, getEmail(), receiveEmail);
+        System.out.println(getEmail());
         System.out.println(receiveEmail);
         try {
             Transport.send(message);
@@ -61,4 +81,6 @@ public class SenEmailRepositoryImpl implements SendEmailRepository {
 
         return null;
     }
+
+
 }

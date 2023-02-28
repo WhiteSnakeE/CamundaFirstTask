@@ -36,11 +36,11 @@ public class SendEmailToEmployeeTaskTest {
     private SendEmailService sendEmailService;
 
     @Test
-    public void testExecute() throws IOException {
+    public void givenJiraIssue_whenSentEmailToEmployee_thenSentEmail() throws IOException {
 
         //prepare
         JiraIssue jiraIssue = getJiraIssue();
-        jiraIssue.setDelta(4);
+
         when(execution.getVariable(ProcessEnv.ISSUE)).thenReturn(jiraIssue);
 
         String message = EmailMessage.setMessageEmployee(jiraIssue);

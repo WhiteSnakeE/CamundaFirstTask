@@ -1,4 +1,4 @@
-package service;
+package service.util;
 
 import com.atlassian.jira.rest.client.api.StatusCategory;
 import com.atlassian.jira.rest.client.api.domain.Issue;
@@ -7,6 +7,7 @@ import com.atlassian.jira.rest.client.api.domain.Status;
 import com.atlassian.jira.rest.client.api.domain.User;
 import com.example.issueRemindEmailSender.repository.JiraRepository;
 import org.apache.commons.io.IOUtils;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
@@ -27,13 +28,12 @@ import java.util.Map;
 public class JiraRepositoryMock implements JiraRepository {
 
     public SearchResult getIssuesFields(String jql, int maxResults) {
-
         try {
             return getSearchResult();
         } catch (IOException e) {
             e.printStackTrace();
+            throw new BpmnError("SOLVIT_ERROR", e.getMessage());
         }
-        return null;
     }
 
     private SearchResult getSearchResult() throws IOException {
@@ -69,7 +69,7 @@ public class JiraRepositoryMock implements JiraRepository {
                 issueList.add(needIssue);
             }
         } catch (Exception e) {
-            System.out.println("Error");
+            throw new BpmnError("SOLVIT_ERROR", e.getMessage());
         }
 
         return new SearchResult(startAt, maxResults, total, issueList);

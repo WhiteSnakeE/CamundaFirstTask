@@ -32,7 +32,7 @@ public class SendEmailToTeamLeadTaskTest {
     private SendEmailService sendEmailService;
 
     @Test
-    public void testExecute() throws IOException {
+    public void givenJiraIssue_whenSentEmailToTeamLead_thenSentEmail() throws IOException {
 
         //prepare
         JiraIssue jiraIssue = getJiraIssue();

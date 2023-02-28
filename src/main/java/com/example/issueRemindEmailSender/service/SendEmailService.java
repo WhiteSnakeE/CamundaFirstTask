@@ -20,7 +20,7 @@ public class SendEmailService {
         boolean isSended;
         isSended = sendEmailRepository.send(receiveEmail, messageText);
         if (!isSended){
-            log.info("Message was not send");
+            log.info("Message was not send to "  + receiveEmail);
             throw new BpmnError("SOLVIT_ERROR");
         }
         return true;

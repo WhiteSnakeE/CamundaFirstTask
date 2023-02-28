@@ -10,18 +10,18 @@
       <output id="Output_1" label="Team Lead Email" name="email" typeRef="string" biodi:width="239" />
       <rule id="DecisionRule_1thdkz2">
         <inputEntry id="UnaryTests_0vb5fk1">
-          <text>"vladyslav.kharchenko@sytoss.com"</text>
+          <text>"vladyslav.kharchenko@sytoss.com","valentin.lyubchenko@extern.A1.at"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0mj8mt0">
           <text>"vlad.kharchenko2003@gmail.com"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_18pq7h2">
-        <inputEntry id="UnaryTests_0nxarnt">
+      <rule id="DecisionRule_1wnpa8c">
+        <inputEntry id="UnaryTests_1gwd4iv">
           <text></text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1vx819p">
-          <text>"gilent12345@gmail.com"</text>
+        <outputEntry id="LiteralExpression_1xnwkzb">
+          <text>"surtx0119@gmail.com"</text>
         </outputEntry>
       </rule>
     </decisionTable>

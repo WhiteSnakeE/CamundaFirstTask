@@ -37,11 +37,10 @@ public class GetAllIssuesTaskTest {
 
     @Mock
     private JiraService jiraServiceAPI;
-    @Mock
-    private MessageCorrelationBuilder correlationBuilder;
+
 
     @Test
-    public void happyTestExecute() throws IOException {
+    public void givenJiraIssues_whenGetJiraBoard_thenReturnJiraAttemptsCount() throws IOException {
         JiraIssue jiraIssue = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue);

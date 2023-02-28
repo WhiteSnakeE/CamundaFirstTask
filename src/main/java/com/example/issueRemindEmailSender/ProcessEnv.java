@@ -24,7 +24,9 @@ public class ProcessEnv {
 
 
     public String getEmail() {
-        return (String) variableScope.getVariable(EMAIL);
+
+       // return (String) variableScope.getVariable(EMAIL);
+        return "fdfdfdf";
     }
 
     public void setAreNeedIssuesPresent(boolean areNeedIssueIsPresent) {

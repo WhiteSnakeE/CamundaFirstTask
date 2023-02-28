@@ -48,7 +48,7 @@ public class JiraService {
                         .createDate(issue.getCreationDate())
                         .updateDate(issue.getUpdateDate())
                         .statusName((issue.getStatus().getName()))
-                        .email(Objects.requireNonNull(issue.getReporter()).getEmailAddress()).build());
+                        .email("Objects.requireNonNull(issue.getReporter()).getEmailAddress()").build());
 
         }
 
