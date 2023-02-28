@@ -63,7 +63,7 @@ public class IssueRemindEmailSenderFlowTest {
     }
 
     @Test
-    public void emailSendToEmployeeAndTeamLead() throws IOException {
+    public void emailSendToEmployeeAndTeamLead() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         JiraIssue jiraIssue = getJiraIssue();
         JiraIssue jiraIssue1 = getJiraIssue();
@@ -104,7 +104,7 @@ public class IssueRemindEmailSenderFlowTest {
     }
 
     @Test
-    public void issueUpdatedLessThanFiveDays() throws IOException {
+    public void issueUpdatedLessThanFiveDays() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         DateTime dateTime = new DateTime();
         JiraIssue jiraIssue = getJiraIssue();
@@ -132,7 +132,7 @@ public class IssueRemindEmailSenderFlowTest {
     }
 
     @Test
-    public void emailNotSent() throws IOException {
+    public void emailNotSent() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         JiraIssue jiraIssue = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
@@ -155,7 +155,7 @@ public class IssueRemindEmailSenderFlowTest {
     }
 
     @Test
-    public void emailSentOnlyToEmployee() throws IOException {
+    public void emailSentOnlyToEmployee() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         DateTime dateTime = new DateTime();
         dateTime = dateTime.minusDays(5);
@@ -182,7 +182,7 @@ public class IssueRemindEmailSenderFlowTest {
         verify(main).hasFinished("ProcedureEndEvent");
     }
     @Test
-    public void emailNotSentToTeamLead() throws IOException {
+    public void emailNotSentToTeamLead() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         JiraIssue jiraIssue = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
@@ -202,7 +202,7 @@ public class IssueRemindEmailSenderFlowTest {
         verify(main).hasFinished("MessageNotSendEndEvent");
     }
     @Test
-    public void allSubProcessTest() throws IOException {
+    public void allSubProcessTest() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         JiraIssue jiraIssueWrong = getJiraIssue();
@@ -246,7 +246,7 @@ public class IssueRemindEmailSenderFlowTest {
     }
 
     @Test
-    public void jiraWasNotTaken() throws IOException {
+    public void jiraWasNotTaken() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         when(jiraService.getIssuesFields()).thenThrow(new BpmnError("SOLVIT_ERROR"));
         Scenario.run(main).

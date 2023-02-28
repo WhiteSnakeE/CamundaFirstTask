@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Slf4j
@@ -28,27 +27,23 @@ public class JiraService {
     }
 
 
-    public List<JiraIssue> getIssuesFields() {
+    public List<JiraIssue> getIssuesFields() throws Exception {
         SearchResult searchResult;
-        try {
-            searchResult = jiraRepository.getIssuesFields(JQL, maxResults);
-            log.info("Jira taken successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.info("Jira was not taken");
-            throw new BpmnError("SOLVIT_ERROR", e.getMessage());
-        }
-       ;
+
+        searchResult = jiraRepository.getIssuesFields(JQL, maxResults);
+        log.info("Jira taken successfully");
+
+
         Iterable<Issue> issues = searchResult.getIssues();
         List<JiraIssue> jiraIssues = new ArrayList<>();
 
-            for (Issue issue : issues) {
-                jiraIssues.add(JiraIssue.builder()
-                        .id(issue.getId())
-                        .createDate(issue.getCreationDate())
-                        .updateDate(issue.getUpdateDate())
-                        .statusName((issue.getStatus().getName()))
-                        .email("Objects.requireNonNull(issue.getReporter()).getEmailAddress()").build());
+        for (Issue issue : issues) {
+            jiraIssues.add(JiraIssue.builder()
+                    .id(issue.getId())
+                    .createDate(issue.getCreationDate())
+                    .updateDate(issue.getUpdateDate())
+                    .statusName((issue.getStatus().getName()))
+                    .email("Objects.requireNonNull(issue.getReporter()).getEmailAddress()").build());
 
         }
 

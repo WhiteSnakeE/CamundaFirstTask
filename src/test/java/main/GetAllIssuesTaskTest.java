@@ -40,7 +40,7 @@ public class GetAllIssuesTaskTest {
 
 
     @Test
-    public void givenJiraIssues_whenGetJiraBoard_thenReturnJiraAttemptsCount() throws IOException {
+    public void givenJiraIssues_whenGetJiraBoard_thenReturnJiraAttemptsCount() throws Exception {
         JiraIssue jiraIssue = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue);

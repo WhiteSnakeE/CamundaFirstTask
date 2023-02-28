@@ -5,6 +5,7 @@ import com.example.issueRemindEmailSender.ProcessEnv;
 import com.example.issueRemindEmailSender.model.JiraIssue;
 import com.example.issueRemindEmailSender.service.JiraService;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,13 @@ public class GetAllIssuesTask implements JavaDelegate {
     public void execute(DelegateExecution execution) {
         ProcessEnv processEnv = new ProcessEnv(execution);
         processEnv.setJiraAttemptsCount(processEnv.getJiraAttemptsCount() + 1);
-        List<JiraIssue> allIssuies = jiraService.getIssuesFields();
+        List<JiraIssue> allIssuies;
+        try {
+            allIssuies = jiraService.getIssuesFields();
+        }
+        catch (Exception e){
+            throw new BpmnError("SOLVIT_ERROR");
+        }
         boolean areAllIssuesNull = !allIssuies.isEmpty();
         log.info("All Issues - {}", allIssuies);
         processEnv.setAreNeedIssuesPresent(areAllIssuesNull);
