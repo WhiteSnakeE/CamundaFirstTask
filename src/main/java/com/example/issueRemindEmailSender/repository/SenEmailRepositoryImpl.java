@@ -33,8 +33,6 @@ public class SenEmailRepositoryImpl implements SendEmailRepository {
         sendMessageText = messageText;
         Session session = sendEmailConfiguration.getSession();
         Message message = prepareMessage(session, sendEmailConfiguration.getEmail(), receiveEmail);
-        System.out.println(sendEmailConfiguration.getEmail());
-        System.out.println(receiveEmail);
         try {
             Transport.send(message);
             log.info("Message sent successfully");

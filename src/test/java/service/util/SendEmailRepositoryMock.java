@@ -25,7 +25,7 @@ public class SendEmailRepositoryMock implements SendEmailRepository {
 
 
     public String getPassword() {
-        return "";
+        return "cjxwuavkjnrfyrcj";
     }
 
 

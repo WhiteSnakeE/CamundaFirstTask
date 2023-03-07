@@ -187,13 +187,9 @@ public class IssueRemindEmailSenderFlowTest {
         JiraIssue jiraIssue = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue);
-        String message = EmailMessage.setMessageEmployee(jiraIssue);
-        String message1 = EmailMessage.setMessageBoss(jiraIssue);
+
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
-        //when(sendEmailService.send(jiraIssue.getEmail(),message)).thenThrow(new BpmnError("SOLVIT_ERROR"));
-        //when(sendEmailService.send(ProcessEnv.EMAIL,message1)).thenThrow(new BpmnError("SOLVIT_ERROR"));
         when(sendEmailService.send(any(),any())).thenThrow(new BpmnError("SOLVIT_ERROR"));
-       // when(execution.getVariable(ProcessEnv.EMAIL)).thenReturn("dsdsdssdsds");
 
         Scenario.run(main).
                 startByKey("IssueRemindEmailSender"
@@ -205,26 +201,30 @@ public class IssueRemindEmailSenderFlowTest {
     public void allSubProcessTest() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         List<JiraIssue> jiraIssueList = new ArrayList<>();
+
         JiraIssue jiraIssueWrong = getJiraIssue();
         jiraIssueWrong.setEmail("wrong email");
-        JiraIssue jiraIssueWrong1 = getJiraIssue();
-        jiraIssueWrong1.setEmail("wrong email");
-        jiraIssueList.add(jiraIssueWrong1);
+        jiraIssueList.add(jiraIssueWrong);
+
         JiraIssue jiraIssueToEmp = getJiraIssue();
         jiraIssueToEmp.setUpdateDate(new DateTime().minusDays(6));
         jiraIssueList.add(jiraIssueToEmp);
+
         JiraIssue jiraIssueToTeamLead = getJiraIssue();
         jiraIssueToTeamLead.setUpdateDate(new DateTime().minusDays(11));
         jiraIssueList.add(jiraIssueToTeamLead);
+
         JiraIssue jiraIssueNotSend = getJiraIssue();
         jiraIssueNotSend.setUpdateDate(new DateTime());
         jiraIssueList.add(jiraIssueNotSend);
+
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
         String message = EmailMessage.setMessageEmployee(jiraIssueWrong);
         String message1 = EmailMessage.setMessageBoss(jiraIssueWrong);
         when(sendEmailService.send(jiraIssueWrong.getEmail(),message)).thenThrow(new BpmnError("SOLVIT_ERROR"));
-        when(execution.getVariable(ProcessEnv.EMAIL)).thenThrow(new BpmnError("SOLVIT_ERROR"));
-        when(sendEmailService.send(jiraIssueWrong.getEmail(),message1)).thenThrow(new BpmnError("SOLVIT_ERROR"));
+        when(execution.getVariable(ProcessEnv.EMAIL)).thenReturn("surtx0119@gmail.com");
+        when(sendEmailService.send(execution.getVariable(ProcessEnv.EMAIL).toString(),message1)).thenThrow(new BpmnError("SOLVIT_ERROR"));
+
 
         Scenario.run(main).
                 startByKey("IssueRemindEmailSender"
@@ -237,10 +237,10 @@ public class IssueRemindEmailSenderFlowTest {
         verify(main,times(4)).hasCompleted("CalculateNotUpdateDaysTask");
         verify(main).hasCanceled("SendEmailToEmployeeTask");
         verify(main,times(2)).hasCompleted("SendEmailToEmployeeTask");
-        verify(main,times(2)).hasCompleted("SendEmailToTeamLeadTask");
-        //verify(main).hasFinished("MessageNotSendEndEvent");
+        verify(main).hasCompleted("SendEmailToTeamLeadTask");
+        verify(main).hasFinished("MessageNotSendEndEvent");
         verify(main).hasFinished("EmailSendedToEmployeeEndEvent");
-        verify(main,times(2)).hasFinished("EmailSendedToBossAndEmployeeEndEvent");
+        verify(main).hasFinished("EmailSendedToBossAndEmployeeEndEvent");
         verify(main).hasFinished("NothingEndEvent");
 
     }

@@ -25,7 +25,6 @@ public class SendEmailToTeamLeadTask implements JavaDelegate {
         log.info("sending to team lead");
         ProcessEnv processEnv = new ProcessEnv(execution);
         JiraIssue jiraIssue = processEnv.getJiraIssues();
-        System.out.println("email" + jiraIssue.getEmail());
         String messageToBoss = EmailMessage.setMessageBoss(jiraIssue);
         sendEmailService.send(processEnv.getEmail(), messageToBoss);
 

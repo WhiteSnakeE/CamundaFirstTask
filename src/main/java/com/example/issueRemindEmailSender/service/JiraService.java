@@ -5,12 +5,12 @@ import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.example.issueRemindEmailSender.model.JiraIssue;
 import com.example.issueRemindEmailSender.repository.JiraRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.engine.delegate.BpmnError;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -39,11 +39,11 @@ public class JiraService {
 
         for (Issue issue : issues) {
             jiraIssues.add(JiraIssue.builder()
-                    .id(issue.getId())
+                    .self(issue.getSelf().toString())
                     .createDate(issue.getCreationDate())
                     .updateDate(issue.getUpdateDate())
                     .statusName((issue.getStatus().getName()))
-                    .email("Objects.requireNonNull(issue.getReporter()).getEmailAddress()").build());
+                    .email(Objects.requireNonNull(issue.getReporter()).getEmailAddress()).build());
 
         }
 

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JiraIssue implements Serializable {
-	private Long id;
+	private String self;
 	private DateTime updateDate;
 	private DateTime createDate;
 	private String email;

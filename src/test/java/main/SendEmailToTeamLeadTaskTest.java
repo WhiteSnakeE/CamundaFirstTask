@@ -2,6 +2,7 @@ package main;
 
 import com.example.issueRemindEmailSender.ProcessEnv;
 import com.example.issueRemindEmailSender.model.JiraIssue;
+import com.example.issueRemindEmailSender.service.EmailMessage;
 import com.example.issueRemindEmailSender.service.SendEmailService;
 import com.example.issueRemindEmailSender.task.SendEmailToTeamLeadTask;
 import org.apache.commons.io.IOUtils;
@@ -38,16 +39,17 @@ public class SendEmailToTeamLeadTaskTest {
         JiraIssue jiraIssue = getJiraIssue();
 
         when(execution.getVariable(ProcessEnv.ISSUE)).thenReturn(jiraIssue);
-        when(execution.getVariable(ProcessEnv.EMAIL)).thenReturn("surtx0119@gmail.com");
+        when(execution.getVariable(ProcessEnv.EMAIL)).thenReturn("vlad.kharchenko2003@gmail.com");
 
+        String message = EmailMessage.setMessageBoss(jiraIssue);
         //test
-        when(sendEmailService.send(any(),any())).thenReturn(true);
+        when(sendEmailService.send(execution.getVariable(ProcessEnv.EMAIL).toString(),message)).thenReturn(true);
         task.execute(execution);
 
 
         //verify
          verify(execution).getVariable(ProcessEnv.ISSUE);
-         verify(execution).getVariable(ProcessEnv.EMAIL);
+         verify(execution,times(2)).getVariable(ProcessEnv.EMAIL);
 
     }
     private JiraIssue getJiraIssue() throws IOException {
