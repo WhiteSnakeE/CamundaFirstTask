@@ -1,37 +1,198 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_02el37x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_02el37x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
   <bpmn:process id="Issue-Remind-Email-Sender-child-issue-Analyze" name="Issue-Remind-Email-Sender-child-issue-Analyze" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1" camunda:asyncBefore="true">
-      <bpmn:outgoing>Flow_1694o3q</bpmn:outgoing>
+    <bpmn:startEvent id="AllIssuesCollectedStartEvent" name="All Issues collected">
+      <bpmn:outgoing>Flow_0llnmh5</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1694o3q" sourceRef="StartEvent_1" targetRef="Activity_0asrtb9" />
-    <bpmn:endEvent id="Event_1s3pc90" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_0bepplt</bpmn:incoming>
+    <bpmn:serviceTask id="SendEmailToTeamLeadTask" name="sent email to team lead" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailToTeamLead}">
+      <bpmn:incoming>Flow_0q748uc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1l3sg70</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EmailSendedToBossAndEmployeeEndEvent" name="Email sented to boss and employee">
+      <bpmn:incoming>Flow_1l3sg70</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0bepplt" sourceRef="Activity_0asrtb9" targetRef="Event_1s3pc90" />
-    <bpmn:userTask id="Activity_0asrtb9" name="test" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_1694o3q</bpmn:incoming>
-      <bpmn:outgoing>Flow_0bepplt</bpmn:outgoing>
-    </bpmn:userTask>
+    <bpmn:serviceTask id="CalculateNotUpdateDaysTask" name="calculate not update days" camunda:asyncBefore="true" camunda:delegateExpression="${CalculateNotUpdateDays}">
+      <bpmn:incoming>Flow_0llnmh5</bpmn:incoming>
+      <bpmn:outgoing>Flow_04x3u39</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="IssueWasNotUpdatingMoreFiveDays" name="Issue was not updating more five days?" default="Flow_0d9t0u8">
+      <bpmn:incoming>Flow_04x3u39</bpmn:incoming>
+      <bpmn:outgoing>Flow_17ya30w</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0d9t0u8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="SendEmailToEmployeeTask" name="sent email  to employee" camunda:asyncBefore="true" camunda:delegateExpression="${SendEmailToEmployee}">
+      <bpmn:incoming>Flow_17ya30w</bpmn:incoming>
+      <bpmn:outgoing>Flow_1i0dzy8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EmailSendedToEmployeeEndEvent" name="email sented  to employee" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_0xim723</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="IssueWasNotUpdatingMoreTenDays" name="issue was not updating more 10 days?" default="Flow_0xim723">
+      <bpmn:incoming>Flow_1i0dzy8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xim723</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0lvqk34</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:businessRuleTask id="GetTeamLeadEmailTask" name="get team lead email" camunda:asyncBefore="true" camunda:resultVariable="email" camunda:decisionRef="EmailRules" camunda:mapDecisionResult="singleEntry">
+      <bpmn:incoming>Flow_0lvqk34</bpmn:incoming>
+      <bpmn:incoming>Flow_0ddtt3i</bpmn:incoming>
+      <bpmn:outgoing>Flow_0q748uc</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:endEvent id="NothingEndEvent" name="nothing ">
+      <bpmn:incoming>Flow_0d9t0u8</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="MessageNotSendEndEvent" name="message not sent" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_155nz38</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Event_05akd78" attachedToRef="SendEmailToTeamLeadTask">
+      <bpmn:outgoing>Flow_155nz38</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_02yqn34" errorRef="Error_049nqp3" />
+    </bpmn:boundaryEvent>
+    <bpmn:boundaryEvent id="Event_1mhbdg0" camunda:asyncBefore="true" attachedToRef="SendEmailToEmployeeTask">
+      <bpmn:outgoing>Flow_0ddtt3i</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_01jzf1f" errorRef="Error_0r0bctc" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_0llnmh5" sourceRef="AllIssuesCollectedStartEvent" targetRef="CalculateNotUpdateDaysTask" />
+    <bpmn:sequenceFlow id="Flow_0q748uc" sourceRef="GetTeamLeadEmailTask" targetRef="SendEmailToTeamLeadTask" />
+    <bpmn:sequenceFlow id="Flow_1l3sg70" sourceRef="SendEmailToTeamLeadTask" targetRef="EmailSendedToBossAndEmployeeEndEvent" />
+    <bpmn:sequenceFlow id="Flow_04x3u39" sourceRef="CalculateNotUpdateDaysTask" targetRef="IssueWasNotUpdatingMoreFiveDays" />
+    <bpmn:sequenceFlow id="Flow_17ya30w" name="Yes" sourceRef="IssueWasNotUpdatingMoreFiveDays" targetRef="SendEmailToEmployeeTask">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${issue.getDelta()&gt;=5}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0d9t0u8" name="No" sourceRef="IssueWasNotUpdatingMoreFiveDays" targetRef="NothingEndEvent" />
+    <bpmn:sequenceFlow id="Flow_1i0dzy8" sourceRef="SendEmailToEmployeeTask" targetRef="IssueWasNotUpdatingMoreTenDays" />
+    <bpmn:sequenceFlow id="Flow_0xim723" name="no" sourceRef="IssueWasNotUpdatingMoreTenDays" targetRef="EmailSendedToEmployeeEndEvent" />
+    <bpmn:sequenceFlow id="Flow_0lvqk34" name="yes" sourceRef="IssueWasNotUpdatingMoreTenDays" targetRef="GetTeamLeadEmailTask">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${issue.getDelta()&gt;=10}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ddtt3i" sourceRef="Event_1mhbdg0" targetRef="GetTeamLeadEmailTask" />
+    <bpmn:sequenceFlow id="Flow_155nz38" sourceRef="Event_05akd78" targetRef="MessageNotSendEndEvent" />
   </bpmn:process>
+  <bpmn:error id="Error_049nqp3" name="SOLVIT_ERROR" errorCode="SOLVIT_ERROR" />
+  <bpmn:error id="Error_0r0bctc" name="SOLVIT_ERROR" errorCode="SOLVIT_ERROR" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Issue-Remind-Email-Sender-child-issue-Analyze">
-      <bpmndi:BPMNEdge id="Flow_0bepplt_di" bpmnElement="Flow_0bepplt">
-        <di:waypoint x="370" y="117" />
-        <di:waypoint x="432" y="117" />
+      <bpmndi:BPMNEdge id="BPMNEdge_18jpogu" bpmnElement="Flow_0llnmh5">
+        <di:waypoint x="198" y="160" />
+        <di:waypoint x="310" y="160" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1694o3q_di" bpmnElement="Flow_1694o3q">
-        <di:waypoint x="215" y="117" />
-        <di:waypoint x="270" y="117" />
+      <bpmndi:BPMNEdge id="BPMNEdge_0216h8s" bpmnElement="Flow_0q748uc">
+        <di:waypoint x="1020" y="270" />
+        <di:waypoint x="1020" y="320" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="179" y="99" width="36" height="36" />
+      <bpmndi:BPMNEdge id="BPMNEdge_06yvyuu" bpmnElement="Flow_1l3sg70">
+        <di:waypoint x="1070" y="360" />
+        <di:waypoint x="1162" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1ey12jx" bpmnElement="Flow_04x3u39">
+        <di:waypoint x="410" y="160" />
+        <di:waypoint x="455" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1vn1v7e" bpmnElement="Flow_17ya30w">
+        <di:waypoint x="505" y="160" />
+        <di:waypoint x="550" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="519" y="142" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1mym0wc" bpmnElement="Flow_0d9t0u8">
+        <di:waypoint x="480" y="185" />
+        <di:waypoint x="480" y="272" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="452" y="201" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1xzmd5i" bpmnElement="Flow_1i0dzy8">
+        <di:waypoint x="650" y="160" />
+        <di:waypoint x="685" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1jttaau" bpmnElement="Flow_0xim723">
+        <di:waypoint x="735" y="160" />
+        <di:waypoint x="1162" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="764" y="145" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1wt5nvq" bpmnElement="Flow_0lvqk34">
+        <di:waypoint x="710" y="185" />
+        <di:waypoint x="710" y="230" />
+        <di:waypoint x="970" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="717" y="180" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0zugiwo" bpmnElement="Flow_0ddtt3i">
+        <di:waypoint x="620" y="218" />
+        <di:waypoint x="620" y="250" />
+        <di:waypoint x="970" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1drhchf" bpmnElement="Flow_155nz38">
+        <di:waypoint x="1050" y="418" />
+        <di:waypoint x="1050" y="500" />
+        <di:waypoint x="1162" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_1l0avho" bpmnElement="AllIssuesCollectedStartEvent">
+        <dc:Bounds x="162" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="185" width="47" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1s3pc90_di" bpmnElement="Event_1s3pc90">
-        <dc:Bounds x="432" y="99" width="36" height="36" />
+      <bpmndi:BPMNShape id="BPMNShape_1k34mvo" bpmnElement="SendEmailToTeamLeadTask">
+        <dc:Bounds x="970" y="320" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1sjagkc_di" bpmnElement="Activity_0asrtb9">
-        <dc:Bounds x="270" y="77" width="100" height="80" />
+      <bpmndi:BPMNShape id="BPMNShape_0mlidql" bpmnElement="EmailSendedToBossAndEmployeeEndEvent">
+        <dc:Bounds x="1162" y="342" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1144" y="385" width="77" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1px1xj1" bpmnElement="CalculateNotUpdateDaysTask">
+        <dc:Bounds x="310" y="120" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1988fj6" bpmnElement="IssueWasNotUpdatingMoreFiveDays" isMarkerVisible="true">
+        <dc:Bounds x="455" y="135" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="450" y="80" width="71" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_04hb8l8" bpmnElement="SendEmailToEmployeeTask">
+        <dc:Bounds x="550" y="120" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_191myob" bpmnElement="EmailSendedToEmployeeEndEvent">
+        <dc:Bounds x="1162" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1150" y="185" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1dfh6gg" bpmnElement="IssueWasNotUpdatingMoreTenDays" isMarkerVisible="true">
+        <dc:Bounds x="685" y="135" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="669" y="80" width="86" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0i2etij" bpmnElement="GetTeamLeadEmailTask">
+        <dc:Bounds x="970" y="190" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1716yww" bpmnElement="NothingEndEvent">
+        <dc:Bounds x="462" y="272" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="461" y="323" width="37" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1sndyhm" bpmnElement="MessageNotSendEndEvent">
+        <dc:Bounds x="1162" y="482" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1136" y="525" width="88" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1w0z4ll" bpmnElement="Event_05akd78">
+        <dc:Bounds x="1032" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1s7efl0" bpmnElement="Event_1mhbdg0">
+        <dc:Bounds x="602" y="182" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
