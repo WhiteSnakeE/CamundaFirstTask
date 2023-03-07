@@ -65,7 +65,7 @@ public class JiraRepositoryMock implements JiraRepository {
                 avatarUris.put("32x32",URI.create(node.get("fields").get("creator").get("avatarUrls").get("32x32").asText()));
                 User user = new User(null,null,null,null,node.get("fields").get("creator").get("emailAddress").asText(),true,null,avatarUris,null);
                 Status status = new Status(null,null,node.get("fields").get("status").get("name").asText(),null,null,null);
-                Issue needIssue = new Issue(null, null, null, node.get("id").asLong(), null, null, status, null, null, null, null, user, null, DateTime.parse(created), DateTime.parse(updated), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                Issue needIssue = new Issue(null, URI.create(node.get("self").asText()), null, null, null, null, status, null, null, null, null, user, null, DateTime.parse(created), DateTime.parse(updated), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
                 issueList.add(needIssue);
             }
         } catch (Exception e) {

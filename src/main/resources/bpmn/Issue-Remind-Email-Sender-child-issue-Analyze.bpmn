@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_02el37x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
-  <bpmn:process id="Issue-Remind-Email-Sender-child-issue-Analyze" name="Issue-Remind-Email-Sender-child-issue-Analyze" isExecutable="true">
+  <bpmn:process id="Issue-Remind-Email-Sender-child-issue-Analyze1" name="Issue-Remind-Email-Sender-child-issue-Analyze" isExecutable="true">
     <bpmn:startEvent id="AllIssuesCollectedStartEvent" name="All Issues collected">
       <bpmn:outgoing>Flow_0llnmh5</bpmn:outgoing>
     </bpmn:startEvent>
@@ -70,47 +70,16 @@
   <bpmn:error id="Error_049nqp3" name="SOLVIT_ERROR" errorCode="SOLVIT_ERROR" />
   <bpmn:error id="Error_0r0bctc" name="SOLVIT_ERROR" errorCode="SOLVIT_ERROR" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Issue-Remind-Email-Sender-child-issue-Analyze">
-      <bpmndi:BPMNEdge id="BPMNEdge_18jpogu" bpmnElement="Flow_0llnmh5">
-        <di:waypoint x="198" y="160" />
-        <di:waypoint x="310" y="160" />
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Issue-Remind-Email-Sender-child-issue-Analyze1">
+      <bpmndi:BPMNEdge id="BPMNEdge_1drhchf" bpmnElement="Flow_155nz38">
+        <di:waypoint x="1050" y="418" />
+        <di:waypoint x="1050" y="500" />
+        <di:waypoint x="1162" y="500" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0216h8s" bpmnElement="Flow_0q748uc">
-        <di:waypoint x="1020" y="270" />
-        <di:waypoint x="1020" y="320" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_06yvyuu" bpmnElement="Flow_1l3sg70">
-        <di:waypoint x="1070" y="360" />
-        <di:waypoint x="1162" y="360" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1ey12jx" bpmnElement="Flow_04x3u39">
-        <di:waypoint x="410" y="160" />
-        <di:waypoint x="455" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1vn1v7e" bpmnElement="Flow_17ya30w">
-        <di:waypoint x="505" y="160" />
-        <di:waypoint x="550" y="160" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="519" y="142" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1mym0wc" bpmnElement="Flow_0d9t0u8">
-        <di:waypoint x="480" y="185" />
-        <di:waypoint x="480" y="272" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="452" y="201" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1xzmd5i" bpmnElement="Flow_1i0dzy8">
-        <di:waypoint x="650" y="160" />
-        <di:waypoint x="685" y="160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1jttaau" bpmnElement="Flow_0xim723">
-        <di:waypoint x="735" y="160" />
-        <di:waypoint x="1162" y="160" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="764" y="145" width="13" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNEdge id="BPMNEdge_0zugiwo" bpmnElement="Flow_0ddtt3i">
+        <di:waypoint x="620" y="218" />
+        <di:waypoint x="620" y="250" />
+        <di:waypoint x="970" y="250" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_1wt5nvq" bpmnElement="Flow_0lvqk34">
         <di:waypoint x="710" y="185" />
@@ -120,15 +89,46 @@
           <dc:Bounds x="717" y="180" width="17" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0zugiwo" bpmnElement="Flow_0ddtt3i">
-        <di:waypoint x="620" y="218" />
-        <di:waypoint x="620" y="250" />
-        <di:waypoint x="970" y="250" />
+      <bpmndi:BPMNEdge id="BPMNEdge_1jttaau" bpmnElement="Flow_0xim723">
+        <di:waypoint x="735" y="160" />
+        <di:waypoint x="1162" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="764" y="145" width="13" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1drhchf" bpmnElement="Flow_155nz38">
-        <di:waypoint x="1050" y="418" />
-        <di:waypoint x="1050" y="500" />
-        <di:waypoint x="1162" y="500" />
+      <bpmndi:BPMNEdge id="BPMNEdge_1xzmd5i" bpmnElement="Flow_1i0dzy8">
+        <di:waypoint x="650" y="160" />
+        <di:waypoint x="685" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1mym0wc" bpmnElement="Flow_0d9t0u8">
+        <di:waypoint x="480" y="185" />
+        <di:waypoint x="480" y="272" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="452" y="201" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1vn1v7e" bpmnElement="Flow_17ya30w">
+        <di:waypoint x="505" y="160" />
+        <di:waypoint x="550" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="519" y="142" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1ey12jx" bpmnElement="Flow_04x3u39">
+        <di:waypoint x="410" y="160" />
+        <di:waypoint x="455" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_06yvyuu" bpmnElement="Flow_1l3sg70">
+        <di:waypoint x="1070" y="360" />
+        <di:waypoint x="1162" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0216h8s" bpmnElement="Flow_0q748uc">
+        <di:waypoint x="1020" y="270" />
+        <di:waypoint x="1020" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_18jpogu" bpmnElement="Flow_0llnmh5">
+        <di:waypoint x="198" y="160" />
+        <di:waypoint x="310" y="160" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_1l0avho" bpmnElement="AllIssuesCollectedStartEvent">
         <dc:Bounds x="162" y="142" width="36" height="36" />
@@ -188,11 +188,11 @@
           <dc:Bounds x="1136" y="525" width="88" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1w0z4ll" bpmnElement="Event_05akd78">
-        <dc:Bounds x="1032" y="382" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1s7efl0" bpmnElement="Event_1mhbdg0">
         <dc:Bounds x="602" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1w0z4ll" bpmnElement="Event_05akd78">
+        <dc:Bounds x="1032" y="382" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

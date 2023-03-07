@@ -92,7 +92,7 @@
       <bpmn:incoming>Flow_0ahog64</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0ahog64" sourceRef="IssueProccessing" targetRef="ProcedureEndEvent" />
-    <bpmn:callActivity id="IssueProccessing" name="IssueProccessing" calledElement="Issue-Remind-Email-Sender-child-issue-Analyze">
+    <bpmn:callActivity id="IssueProccessing" name="IssueProccessing" calledElement="Issue-Remind-Email-Sender-child-issue-Analyze1">
       <bpmn:extensionElements>
         <camunda:in source="issue" target="issue" />
       </bpmn:extensionElements>

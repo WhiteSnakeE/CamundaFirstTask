@@ -30,6 +30,7 @@ mail:
       protocols: "TLSv1.2"
     starttls:
       enable: "true"
+project: "CamundaTraning"
 
 
 jira :
