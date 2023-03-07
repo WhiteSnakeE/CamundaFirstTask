@@ -93,8 +93,12 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0ahog64" sourceRef="IssueProccessing" targetRef="ProcedureEndEvent" />
     <bpmn:callActivity id="IssueProccessing" name="IssueProccessing" calledElement="Issue-Remind-Email-Sender-child-issue-Analyze">
+      <bpmn:extensionElements>
+        <camunda:in source="issue" target="issue" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0re1xyl</bpmn:incoming>
       <bpmn:outgoing>Flow_0ahog64</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:asyncBefore="true" camunda:collection="${jiraIssues}" camunda:elementVariable="issue" />
     </bpmn:callActivity>
     <bpmn:textAnnotation id="TextAnnotation_1hh7zuo">
       <bpmn:text>Get jira board via  RESR API</bpmn:text>
@@ -114,6 +118,10 @@
         <dc:Bounds x="160" y="170" width="1390" height="620" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0ahog64_di" bpmnElement="Flow_0ahog64">
+        <di:waypoint x="1260" y="450" />
+        <di:waypoint x="1422" y="450" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0wk1s1i_di" bpmnElement="Flow_0wk1s1i">
         <di:waypoint x="980" y="475" />
         <di:waypoint x="980" y="692" />
@@ -174,10 +182,6 @@
         <di:waypoint x="320" y="380" />
         <di:waypoint x="320" y="425" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0ahog64_di" bpmnElement="Flow_0ahog64">
-        <di:waypoint x="1260" y="450" />
-        <di:waypoint x="1422" y="450" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0j8dpnt_di" bpmnElement="TaskStartedStartEvent">
         <dc:Bounds x="212" y="362" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -234,24 +238,24 @@
           <dc:Bounds x="218" y="563" width="84" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0j8msu4_di" bpmnElement="ProcedureEndEvent">
-        <dc:Bounds x="1422" y="432" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1398" y="475" width="84" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_16w5qje_di" bpmnElement="Event_16w5qje">
         <dc:Bounds x="962" y="692" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="948" y="735" width="65" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1hh7zuo_di" bpmnElement="TextAnnotation_1hh7zuo">
-        <dc:Bounds x="700" y="240" width="100" height="41" />
-        <bpmndi:BPMNLabel />
+      <bpmndi:BPMNShape id="Event_0j8msu4_di" bpmnElement="ProcedureEndEvent">
+        <dc:Bounds x="1422" y="432" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1398" y="475" width="84" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_159ihxr_di" bpmnElement="IssueProccessing">
         <dc:Bounds x="1160" y="410" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1hh7zuo_di" bpmnElement="TextAnnotation_1hh7zuo">
+        <dc:Bounds x="700" y="240" width="100" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1p4nqpn_di" bpmnElement="Event_1jln8ly">
