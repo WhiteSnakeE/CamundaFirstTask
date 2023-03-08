@@ -28,7 +28,7 @@ public class JiraRepositoryRest implements JiraRepository {
     public SearchResult getIssuesFields(String jql, int maxResults) {
 
         try {
-            return searchRestClient.searchJql(jql, maxResults, 0, null).get(10,TimeUnit.SECONDS);
+            return searchRestClient.searchJql(jql, maxResults, 0, null).get(1,TimeUnit.NANOSECONDS);
         } catch (InterruptedException | TimeoutException | ExecutionException | NullPointerException e) {
             e.printStackTrace();
             throw new BpmnError("SOLVIT_ERROR", e.getMessage());

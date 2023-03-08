@@ -24,6 +24,8 @@ public class JiraService {
 
     private int maxResults = 500;
 
+    private String jql = "\"project = \"" + project + "\" and status!=done\"";
+
     public JiraService(JiraRepository jiraRepository) {
         this.jiraRepository = jiraRepository;
     }
@@ -31,7 +33,8 @@ public class JiraService {
 
     public List<JiraIssue> getIssuesFields() {
         SearchResult searchResult;
-        searchResult = jiraRepository.getIssuesFields(setJQLProject(project), maxResults);
+        System.out.println(jql);
+        searchResult = jiraRepository.getIssuesFields(jql, maxResults);
         log.info("Jira taken successfully");
 
 
@@ -51,8 +54,10 @@ public class JiraService {
 
     }
 
-    private String setJQLProject(String project){
-        return "project = \"" + project + "\" and status!=done";
+
+    public void setJQLProject(String projectName){
+        if(projectName!=null) jql =  "project = \"" + projectName + "\" and status!=done";
+        else jql =  "project = \"" + project + "\" and status!=done";
     }
 
     public static int lastUpdateDays(JiraIssue issue) {
