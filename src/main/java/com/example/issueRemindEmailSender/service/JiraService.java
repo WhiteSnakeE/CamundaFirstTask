@@ -18,6 +18,8 @@ import java.util.Objects;
 public class JiraService {
 
     @Value("${project}")
+    private String defaultProject;
+
     private String project;
 
     private final JiraRepository jiraRepository;

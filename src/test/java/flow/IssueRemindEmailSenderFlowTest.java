@@ -36,7 +36,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @Deployment(resources = {
-        "bpmn/notUpdatedIssueEmailSender.bpmn",
+        "bpmn/Issue-Remind-Email-Sender-child-issue-Analyze.bpmn",
+        "bpmn/Issue-Remind-Email-Sender-main.bpmn",
         "bpmn/applicationRules.dmn"
 })
 public class IssueRemindEmailSenderFlowTest {
@@ -60,11 +61,14 @@ public class IssueRemindEmailSenderFlowTest {
         Mocks.register("GetStartTimeOfProcess", new GetStartTimeOfProcessTask());
         Mocks.register("SendEmailToEmployee", new SendEmailToEmployeeTask(sendEmailService));
         Mocks.register("SendEmailToTeamLead", new SendEmailToTeamLeadTask(sendEmailService));
+        Mocks.register("CheckProjectName", new CheckProjectNameTask(jiraService));
     }
 
     @Test
     public void emailSendToEmployeeAndTeamLead() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
+        ProcessScenario child = mock(ProcessScenario.class);
+        when(main.runsCallActivity("IssueProccessing")).thenReturn(Scenario.use(child));
         JiraIssue jiraIssue = getJiraIssue();
         JiraIssue jiraIssue1 = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
