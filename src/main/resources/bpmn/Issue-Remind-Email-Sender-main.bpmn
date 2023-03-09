@@ -20,11 +20,11 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${jiraAttemptsCount &gt; 2}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_11nf7ad" name="No" sourceRef="IsItThirdAttemptGateway" targetRef="PauseOneMinuteTimerCatchEvent" />
-    <bpmn:sequenceFlow id="Flow_0re1xyl" name="Yes" sourceRef="AreNeedIssuesArePresent" targetRef="IssueProccessing">
+    <bpmn:sequenceFlow id="Flow_0re1xyl" name="Yes" sourceRef="AreNeedIssuesArePresent" targetRef="IssueProcessing">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${areNeedIssueIsPresent == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0wk1s1i" sourceRef="AreNeedIssuesArePresent" targetRef="Event_16w5qje" />
-    <bpmn:sequenceFlow id="Flow_0ahog64" sourceRef="IssueProccessing" targetRef="ProcedureEndEvent" />
+    <bpmn:sequenceFlow id="Flow_0wk1s1i" sourceRef="AreNeedIssuesArePresent" targetRef="IssueDoesntExist" />
+    <bpmn:sequenceFlow id="Flow_0ahog64" sourceRef="IssueProcessing" targetRef="ProcedureEndEvent" />
     <bpmn:startEvent id="EveryFiveMinutesStartEvent" name="every 50 minutes" camunda:asyncBefore="true">
       <bpmn:outgoing>Flow_0zszmny</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1q7hahd">
@@ -82,13 +82,13 @@
       <bpmn:outgoing>Flow_0re1xyl</bpmn:outgoing>
       <bpmn:outgoing>Flow_0wk1s1i</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:endEvent id="Event_16w5qje" name="issue doesn&#39;t esixt">
+    <bpmn:endEvent id="IssueDoesntExist" name="issue doesn&#39;t esixt">
       <bpmn:incoming>Flow_0wk1s1i</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:endEvent id="ProcedureEndEvent" name="procedure ended" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_0ahog64</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:callActivity id="IssueProccessing" name="IssueProccessing" calledElement="Issue-Remind-Email-Sender-child-issue-Analyze1">
+    <bpmn:callActivity id="IssueProcessing" name="IssueProcessing" camunda:asyncBefore="true" calledElement="Issue-Remind-Email-Sender-child-issue-Analyze">
       <bpmn:extensionElements>
         <camunda:in source="issue" target="issue" />
       </bpmn:extensionElements>
@@ -123,10 +123,10 @@
         <dc:Bounds x="160" y="170" width="1560" height="620" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1hh7zuo_di" bpmnElement="TextAnnotation_1hh7zuo">
-        <dc:Bounds x="870" y="240" width="100" height="41" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1xfqhwp_di" bpmnElement="Flow_1xfqhwp">
+        <di:waypoint x="690" y="450" />
+        <di:waypoint x="775" y="450" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ahog64_di" bpmnElement="Flow_0ahog64">
         <di:waypoint x="1430" y="450" />
         <di:waypoint x="1592" y="450" />
@@ -191,28 +191,24 @@
         <di:waypoint x="320" y="380" />
         <di:waypoint x="320" y="425" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1xfqhwp_di" bpmnElement="Flow_1xfqhwp">
-        <di:waypoint x="690" y="450" />
-        <di:waypoint x="775" y="450" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1vbyabl_di" bpmnElement="EveryFiveMinutesStartEvent">
+        <dc:Bounds x="212" y="514" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="218" y="563" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1w3puaw_di" bpmnElement="Gateway_1w3puaw" isMarkerVisible="true">
+        <dc:Bounds x="295" y="425" width="50" height="50" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0j8dpnt_di" bpmnElement="TaskStartedStartEvent">
         <dc:Bounds x="212" y="362" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="203" y="405" width="59" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1w3puaw_di" bpmnElement="Gateway_1w3puaw" isMarkerVisible="true">
-        <dc:Bounds x="295" y="425" width="50" height="50" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1me3col_di" bpmnElement="GetStartTimeOfProcessTask">
         <dc:Bounds x="420" y="410" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1vbyabl_di" bpmnElement="EveryFiveMinutesStartEvent">
-        <dc:Bounds x="212" y="514" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="218" y="563" width="84" height="14" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_03w2oc9_di" bpmnElement="Gateway_03w2oc9" isMarkerVisible="true">
         <dc:Bounds x="775" y="425" width="50" height="50" />
@@ -251,7 +247,7 @@
           <dc:Bounds x="1111" y="388" width="79" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_16w5qje_di" bpmnElement="Event_16w5qje">
+      <bpmndi:BPMNShape id="Event_16w5qje_di" bpmnElement="IssueDoesntExist">
         <dc:Bounds x="1132" y="692" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1118" y="735" width="65" height="27" />
@@ -263,36 +259,40 @@
           <dc:Bounds x="1568" y="475" width="84" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_159ihxr_di" bpmnElement="IssueProccessing">
+      <bpmndi:BPMNShape id="Activity_159ihxr_di" bpmnElement="IssueProcessing">
         <dc:Bounds x="1330" y="410" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_050pn71_di" bpmnElement="CheckProjectNameTask">
         <dc:Bounds x="590" y="410" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1hh7zuo_di" bpmnElement="TextAnnotation_1hh7zuo">
+        <dc:Bounds x="870" y="240" width="100" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1p4nqpn_di" bpmnElement="Event_1jln8ly">
+        <dc:Bounds x="932" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1n29cxk_di" bpmnElement="Association_1n29cxk">
         <di:waypoint x="919" y="325" />
         <di:waypoint x="916" y="281" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Event_1p4nqpn_di" bpmnElement="Event_1jln8ly">
-        <dc:Bounds x="932" y="472" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Group_0nnvnr0_di" bpmnElement="Group_0nnvnr0">
         <dc:Bounds x="200" y="150" width="1070" height="660" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="970" y="106" width="88" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="DataInputAssociation_0v6boi5_di" bpmnElement="DataInputAssociation_0v6boi5">
-        <di:waypoint x="920" y="375" />
-        <di:waypoint x="920" y="410" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Group_15kf3n4_di" bpmnElement="Group_15kf3n4">
         <dc:Bounds x="1277" y="150" width="453" height="660" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1425" y="67" width="82" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0v6boi5_di" bpmnElement="DataInputAssociation_0v6boi5">
+        <di:waypoint x="920" y="375" />
+        <di:waypoint x="920" y="410" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

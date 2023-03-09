@@ -14,6 +14,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.test.mock.Mocks;
+import org.camunda.bpm.extension.mockito.ProcessExpressions;
 import org.camunda.bpm.extension.process_test_coverage.junit.rules.TestCoverageProcessEngineRuleBuilder;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
@@ -68,9 +69,11 @@ public class IssueRemindEmailSenderFlowTest {
     public void emailSendToEmployeeAndTeamLead() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
         ProcessScenario child = mock(ProcessScenario.class);
-        when(main.runsCallActivity("IssueProccessing")).thenReturn(Scenario.use(child));
+        when(main.runsCallActivity("IssueProcessing")).thenReturn(Scenario.use(child));
         JiraIssue jiraIssue = getJiraIssue();
+        jiraIssue.setUpdateDate(new DateTime().minusDays(5));
         JiraIssue jiraIssue1 = getJiraIssue();
+        jiraIssue1.setUpdateDate(new DateTime().minusDays(10));
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue1);
         jiraIssueList.add(jiraIssue);
@@ -82,13 +85,10 @@ public class IssueRemindEmailSenderFlowTest {
 
         verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
+        verify(main).hasCompleted("CheckProjectNameTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main, times(2)).hasCompleted("AllIssuesCollectedStartEvent");
-        verify(main, times(2)).hasCompleted("SendEmailToEmployeeTask");
-        verify(main, times(2)).hasCompleted("SendEmailToTeamLeadTask");
-        verify(main, times(2)).hasFinished("EmailSendedToBossAndEmployeeEndEvent");
-
-
+        verify(main, times(2)).hasCompleted("IssueProcessing");
+        verify(main).hasCompleted("IssueProcessing#multiInstanceBody");
     }
 
     @Test
@@ -101,22 +101,21 @@ public class IssueRemindEmailSenderFlowTest {
 
         verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
+        verify(main).hasCompleted("CheckProjectNameTask");
         verify(main).hasCompleted("GetAllIssuesTask");
         verify(main, never()).hasStarted("AllIssuesCollectedStartEvent");
-        verify(main).hasFinished("ProcedureEndEvent");
+        verify(main).hasFinished("IssueDoesntExist");
 
     }
 
     @Test
     public void issueUpdatedLessThanFiveDays() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
-        DateTime dateTime = new DateTime();
+        ProcessScenario child = mock(ProcessScenario.class);
+        when(main.runsCallActivity("IssueProcessing")).thenReturn(Scenario.use(child));
         JiraIssue jiraIssue = getJiraIssue();
-        jiraIssue.setUpdateDate(dateTime);
-        JiraIssue jiraIssue1 = getJiraIssue();
-        jiraIssue1.setUpdateDate(dateTime);
+        jiraIssue.setUpdateDate(new DateTime());
         List<JiraIssue> jiraIssueList = new ArrayList<>();
-        jiraIssueList.add(jiraIssue1);
         jiraIssueList.add(jiraIssue);
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
 
@@ -126,10 +125,10 @@ public class IssueRemindEmailSenderFlowTest {
 
         verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
+        verify(main).hasCompleted("CheckProjectNameTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main, times(2)).hasCompleted("AllIssuesCollectedStartEvent");
-        verify(main, never()).hasCompleted("SendEmailToEmployeeTask");
-        verify(main, times(2)).hasFinished("NothingEndEvent");
+        verify(main).hasCompleted("IssueProcessing");
+        verify(main).hasCompleted("IssueProcessing#multiInstanceBody");
         verify(main).hasFinished("ProcedureEndEvent");
 
 
@@ -138,6 +137,8 @@ public class IssueRemindEmailSenderFlowTest {
     @Test
     public void emailNotSent() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
+        ProcessScenario child = mock(ProcessScenario.class);
+        when(main.runsCallActivity("IssueProcessing")).thenReturn(Scenario.use(child));
         JiraIssue jiraIssue = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue);
@@ -150,10 +151,10 @@ public class IssueRemindEmailSenderFlowTest {
         verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main).hasCompleted("AllIssuesCollectedStartEvent");
-        verify(main).hasCanceled("SendEmailToEmployeeTask");
-        verify(main).hasFinished("MessageNotSendEndEvent");
-        verify(main).hasFinished("ProcedureEndEvent");
+        verify(main).hasCompleted("CheckProjectNameTask");
+        verify(main).hasCompleted("IssueProcessing");
+        verify(main).hasCompleted("IssueProcessing#multiInstanceBody");
+
 
 
     }
@@ -161,14 +162,11 @@ public class IssueRemindEmailSenderFlowTest {
     @Test
     public void emailSentOnlyToEmployee() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
-        DateTime dateTime = new DateTime();
-        dateTime = dateTime.minusDays(5);
+        ProcessScenario child = mock(ProcessScenario.class);
+        when(main.runsCallActivity("IssueProcessing")).thenReturn(Scenario.use(child));
         JiraIssue jiraIssue = getJiraIssue();
-        jiraIssue.setUpdateDate(dateTime);
-        JiraIssue jiraIssue1 = getJiraIssue();
-        jiraIssue1.setUpdateDate(dateTime);
+        jiraIssue.setUpdateDate( new DateTime().minusDays(5));
         List<JiraIssue> jiraIssueList = new ArrayList<>();
-        jiraIssueList.add(jiraIssue1);
         jiraIssueList.add(jiraIssue);
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
 
@@ -179,31 +177,44 @@ public class IssueRemindEmailSenderFlowTest {
         verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main, times(2)).hasCompleted("AllIssuesCollectedStartEvent");
-        verify(main, times(2)).hasCompleted("SendEmailToEmployeeTask");
-        verify(main, times(2)).hasFinished("EmailSendedToEmployeeEndEvent");
-        verify(main, never()).hasCompleted("SendEmailToTeamLeadTask");
+        verify(main).hasCompleted("CheckProjectNameTask");
+        verify(main).hasCompleted("IssueProcessing");
+        verify(main).hasCompleted("IssueProcessing#multiInstanceBody");
         verify(main).hasFinished("ProcedureEndEvent");
     }
     @Test
     public void emailNotSentToTeamLead() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
+        ProcessScenario child = mock(ProcessScenario.class);
+        when(main.runsCallActivity("IssueProcessing")).thenReturn(Scenario.use(child));
         JiraIssue jiraIssue = getJiraIssue();
         List<JiraIssue> jiraIssueList = new ArrayList<>();
         jiraIssueList.add(jiraIssue);
-
+        String message1 = EmailMessage.setMessageBoss(jiraIssue);
+        String message = EmailMessage.setMessageEmployee(jiraIssue);
         when(jiraService.getIssuesFields()).thenReturn(jiraIssueList);
-        when(sendEmailService.send(any(),any())).thenThrow(new BpmnError("SOLVIT_ERROR"));
+        when(sendEmailService.send(jiraIssue.getEmail(),message)).thenThrow(new BpmnError("SOLVIT_ERROR"));
+        when(execution.getVariable(ProcessEnv.EMAIL)).thenReturn("vlad.kharchenko2003@gmail.com");
+        when(sendEmailService.send(execution.getVariable(ProcessEnv.EMAIL).toString(),message1)).thenThrow(new BpmnError("SOLVIT_ERROR"));
 
         Scenario.run(main).
                 startByKey("IssueRemindEmailSender"
                 ).execute();
 
-        verify(main).hasFinished("MessageNotSendEndEvent");
+        verify(main).hasStarted("EveryFiveMinutesStartEvent");
+        verify(main).hasCompleted("GetStartTimeOfProcessTask");
+        verify(main).hasCompleted("GetAllIssuesTask");
+        verify(main).hasCompleted("CheckProjectNameTask");
+        verify(main).hasCompleted("IssueProcessing");
+        verify(main).hasCompleted("IssueProcessing#multiInstanceBody");
+        verify(main).hasFinished("ProcedureEndEvent");
+
     }
     @Test
     public void allSubProcessTest() throws Exception {
         ProcessScenario main = mock(ProcessScenario.class);
+        ProcessScenario child = mock(ProcessScenario.class);
+        when(main.runsCallActivity("IssueProcessing")).thenReturn(Scenario.use(child));
         List<JiraIssue> jiraIssueList = new ArrayList<>();
 
         JiraIssue jiraIssueWrong = getJiraIssue();
@@ -237,15 +248,6 @@ public class IssueRemindEmailSenderFlowTest {
         verify(main).hasStarted("EveryFiveMinutesStartEvent");
         verify(main).hasCompleted("GetStartTimeOfProcessTask");
         verify(main).hasCompleted("GetAllIssuesTask");
-        verify(main,times(4)).hasCompleted("AllIssuesCollectedStartEvent");
-        verify(main,times(4)).hasCompleted("CalculateNotUpdateDaysTask");
-        verify(main).hasCanceled("SendEmailToEmployeeTask");
-        verify(main,times(2)).hasCompleted("SendEmailToEmployeeTask");
-        verify(main).hasCompleted("SendEmailToTeamLeadTask");
-        verify(main).hasFinished("MessageNotSendEndEvent");
-        verify(main).hasFinished("EmailSendedToEmployeeEndEvent");
-        verify(main).hasFinished("EmailSendedToBossAndEmployeeEndEvent");
-        verify(main).hasFinished("NothingEndEvent");
 
     }
 

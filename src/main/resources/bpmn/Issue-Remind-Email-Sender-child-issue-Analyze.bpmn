@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_02el37x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.1.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
-  <bpmn:process id="Issue-Remind-Email-Sender-child-issue-Analyze1" name="Issue-Remind-Email-Sender-child-issue-Analyze" isExecutable="true">
+  <bpmn:process id="Issue-Remind-Email-Sender-child-issue-Analyze" name="Issue-Remind-Email-Sender-child-issue-Analyze" isExecutable="true">
     <bpmn:startEvent id="AllIssuesCollectedStartEvent" name="All Issues collected">
       <bpmn:outgoing>Flow_0llnmh5</bpmn:outgoing>
     </bpmn:startEvent>
@@ -70,7 +70,7 @@
   <bpmn:error id="Error_049nqp3" name="SOLVIT_ERROR" errorCode="SOLVIT_ERROR" />
   <bpmn:error id="Error_0r0bctc" name="SOLVIT_ERROR" errorCode="SOLVIT_ERROR" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Issue-Remind-Email-Sender-child-issue-Analyze1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Issue-Remind-Email-Sender-child-issue-Analyze">
       <bpmndi:BPMNEdge id="BPMNEdge_1drhchf" bpmnElement="Flow_155nz38">
         <di:waypoint x="1050" y="418" />
         <di:waypoint x="1050" y="500" />
